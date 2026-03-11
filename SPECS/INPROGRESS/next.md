@@ -4,15 +4,15 @@
 **Phase:** Phase 3: Build Retrieval CLI
 **Effort:** High
 **Dependencies:** PH3-T1, PH3-T2
-**Status:** Awaiting SELECT
+**Status:** Selected
 
 ## Description
 
-`PH3-T2` was archived after a passing validation run. Use SELECT to choose `PH3-T3`, which will run PageIndex tree search over the bounded candidate set and normalize node-level retrieval output with explicit machine-readable errors.
+Run PageIndex local tree search over the bounded candidate set from `PH3-T2` and normalize the selected node results into the shared retrieval schema. The implementation must work against the current structure-only JSON corpus, keep reasoning optional, and return explicit machine-readable errors when LM Studio or payload parsing fails.
 
 ## Next Step
 
-Run SELECT for `PH3-T3`, then create the task PRD and execute the local tree-search implementation.
+Run PLAN and EXECUTE for `PH3-T3`, then archive the task and review the local tree-search behavior before proceeding to `PH3-T4`.
 
 ## Recently Archived
 
