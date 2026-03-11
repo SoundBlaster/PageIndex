@@ -71,7 +71,7 @@ Recommended next task:
 ## Phase 2: Build Catalog Layer
 
 #### PH2-T1: Implement Catalog Schema And Builder
-- **Status:** Not Started
+- **Status:** INPROGRESS
 - **Description:** Build the catalog model and scanner that convert many `*_structure.json` files into a deterministic per-project catalog artifact.
 - **Priority:** P0
 - **Dependencies:** None

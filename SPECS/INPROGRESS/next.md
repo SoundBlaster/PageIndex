@@ -4,7 +4,7 @@
 **Phase:** Phase 2: Build Catalog Layer
 **Effort:** 3
 **Dependencies:** None
-**Status:** Ready
+**Status:** Selected
 
 ## Description
 
