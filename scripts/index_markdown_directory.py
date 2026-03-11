@@ -67,6 +67,11 @@ def parse_args():
         default=200,
         help="Token threshold for generating summaries.",
     )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Skip files whose output JSON already exists and keep writing manifest progress during the run.",
+    )
     return parser.parse_args()
 
 
@@ -96,6 +101,11 @@ async def index_file(md_path: Path, args):
     )
 
 
+def write_manifest(manifest_path: Path, manifest: dict):
+    with manifest_path.open("w", encoding="utf-8") as f:
+        json.dump(manifest, f, indent=2, ensure_ascii=False)
+
+
 async def main():
     args = parse_args()
     md_root = Path(args.md_dir).expanduser().resolve()
@@ -112,13 +122,29 @@ async def main():
         "output_root": str(output_root),
         "total_files": len(markdown_files),
         "indexed_files": 0,
+        "skipped_files": 0,
         "failed_files": 0,
         "files": [],
     }
+    manifest_path = output_root / "manifest.json"
+    write_manifest(manifest_path, manifest)
 
     for index, md_path in enumerate(markdown_files, start=1):
         output_path = build_output_path(output_root, md_root, md_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        if args.resume and output_path.exists():
+            print(f"[{index}/{len(markdown_files)}] Skipping existing {md_path}")
+            manifest["skipped_files"] += 1
+            manifest["files"].append(
+                {
+                    "source": str(md_path),
+                    "output": str(output_path),
+                    "status": "skipped",
+                }
+            )
+            write_manifest(manifest_path, manifest)
+            continue
 
         print(f"[{index}/{len(markdown_files)}] Indexing {md_path}")
         try:
@@ -145,13 +171,11 @@ async def main():
                 }
             )
             print(f"Failed: {md_path} -> {exc}")
-
-    manifest_path = output_root / "manifest.json"
-    with manifest_path.open("w", encoding="utf-8") as f:
-        json.dump(manifest, f, indent=2, ensure_ascii=False)
+        write_manifest(manifest_path, manifest)
 
     print(
-        f"Done. Indexed {manifest['indexed_files']} files, failed {manifest['failed_files']}. "
+        f"Done. Indexed {manifest['indexed_files']} files, skipped {manifest['skipped_files']}, "
+        f"failed {manifest['failed_files']}. "
         f"Manifest: {manifest_path}"
     )
 
