@@ -20,6 +20,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-11 | PH2-T2 | Archived `REVIEW_ph2_t2_classification_freshness.md` |
 | 2026-03-11 | PH2-T2 | Archived `Add_Classification_And_Freshness_Heuristics` (PASS) |
 | 2026-03-11 | PH2-T1 | Archived `REVIEW_ph2_t1_catalog_builder.md` |
 | 2026-03-11 | PH2-T1 | Archived `Implement_Catalog_Schema_And_Builder` (PASS) |
