@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import subprocess
+import sys
 
 import pytest
 
@@ -219,6 +221,63 @@ def test_build_catalog_adds_document_type_and_explicit_freshness_ranking(tmp_pat
     assert summary_freshness_source in {"filesystem_created_at", "filesystem_modified_at"}
 
 
+def test_build_index_catalog_cli_writes_explicit_destination(tmp_path: Path):
+    input_root, output_root = _make_cli_fixture(tmp_path)
+    destination = tmp_path / "artifacts" / "catalog.json"
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "scripts/build_index_catalog.py",
+            "--output-root",
+            str(output_root),
+            "--input-root",
+            str(input_root),
+            "--project-id",
+            "demo-project",
+            "--catalog-path",
+            str(destination),
+        ],
+        cwd=Path(__file__).resolve().parent.parent,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(destination.read_text(encoding="utf-8"))
+
+    assert completed.stdout.strip() == str(destination.resolve())
+    assert payload["project_id"] == "demo-project"
+    assert payload["output_root"] == str(output_root.resolve())
+    assert len(payload["records"]) == 1
+
+
+def test_build_index_catalog_cli_uses_sibling_default_destination(tmp_path: Path):
+    input_root, output_root = _make_cli_fixture(tmp_path)
+    default_destination = output_root.parent / f"{output_root.name}_catalog.json"
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "scripts/build_index_catalog.py",
+            "--output-root",
+            str(output_root),
+            "--input-root",
+            str(input_root),
+        ],
+        cwd=Path(__file__).resolve().parent.parent,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(default_destination.read_text(encoding="utf-8"))
+
+    assert completed.stdout.strip() == str(default_destination.resolve())
+    assert payload["output_root"] == str(output_root.resolve())
+    assert payload["records"][0]["output_rel_path"] == "Task_structure.json"
+
+
 def _write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
@@ -227,3 +286,19 @@ def _write_json(path: Path, payload: dict) -> None:
 def _write_text(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
+
+
+def _make_cli_fixture(tmp_path: Path) -> tuple[Path, Path]:
+    input_root = tmp_path / "input"
+    output_root = tmp_path / "output"
+    input_root.mkdir()
+    output_root.mkdir()
+
+    source = input_root / "Task.md"
+    _write_text(source, "# Task\n2026-03-11\n")
+    _write_json(source.with_name("Task_metrics.json"), {"atoms": 1})
+    _write_json(
+        output_root / "Task_structure.json",
+        {"doc_name": "Task", "structure": [{"title": "Task", "nodes": []}]},
+    )
+    return input_root, output_root
