@@ -1,24 +1,26 @@
-# Next Task: PH2-T1 — Implement Catalog Schema And Builder
+# Next Task: None Selected
 
-**Priority:** P0
-**Phase:** Phase 2: Build Catalog Layer
-**Effort:** 3
+**Priority:** TBD
+**Phase:** Unassigned
+**Effort:** TBD
 **Dependencies:** None
-**Status:** Ready
+**Status:** Awaiting SELECT
 
 ## Description
 
-Build the catalog model and scanner that convert many `*_structure.json` files into a deterministic per-project catalog artifact. The catalog must include source path, output path, project/output-root identifier, document name, relative directory, and provenance metadata. It must also preserve uniqueness for duplicate basenames across different folders.
+`PH2-T1` was archived after a passing validation run. Use SELECT to choose the next task from the updated workplan.
 
 ## Next Step
 
-Run the PLAN command to create the implementation-ready PRD for `PH2-T1`.
+Run the SELECT command to choose the next task.
 
 ## Recently Archived
 
+- 2026-03-11 — `PH2-T1` archived to `SPECS/ARCHIVE/PH2-T1_Implement_Catalog_Schema_And_Builder/` with verdict `PASS`.
 - 2026-03-11 — `TASK_ARCHIVE_Indexing_Summary.md` moved to `SPECS/ARCHIVE/_Historical/` after documenting the completed LM Studio indexing run for `ISOInspector/DOCS/TASK_ARCHIVE`.
 
 ## Suggested Next Tasks
 
 - `PH2-T2` — Add Classification And Freshness Heuristics
 - `PH2-T3` — Build Catalog CLI
+- `PH3-T1` — Define Retrieval Result Schema
