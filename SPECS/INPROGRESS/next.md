@@ -1,18 +1,18 @@
-# Next Task: None Selected
+# Next Task: PH2-T2 Add Classification And Freshness Heuristics
 
-**Priority:** TBD
-**Phase:** Unassigned
-**Effort:** TBD
-**Dependencies:** None
-**Status:** Awaiting SELECT
+**Priority:** P0
+**Phase:** Phase 2: Build Catalog Layer
+**Effort:** Medium
+**Dependencies:** PH2-T1
+**Status:** Selected
 
 ## Description
 
-`PH2-T1` was archived after a passing validation run. Use SELECT to choose the next task from the updated workplan.
+Add catalog-level document classification and freshness heuristics so later retrieval stages can prefer task artifacts, down-rank noisy archive summaries, and avoid selecting stale planning documents by default. This task extends the existing catalog builder without introducing CLI surface yet.
 
 ## Next Step
 
-Run the SELECT command to choose the next task.
+Run PLAN for `PH2-T2` and define the classification labels, ranking defaults, and freshness precedence rules to implement in the catalog builder.
 
 ## Recently Archived
 
@@ -21,6 +21,6 @@ Run the SELECT command to choose the next task.
 
 ## Suggested Next Tasks
 
-- `PH2-T2` — Add Classification And Freshness Heuristics
 - `PH2-T3` — Build Catalog CLI
 - `PH3-T1` — Define Retrieval Result Schema
+- `PH3-T2` — Implement Candidate Selection
