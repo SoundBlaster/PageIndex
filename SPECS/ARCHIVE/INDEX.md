@@ -21,6 +21,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-11 | PH2-T3 | Archived `REVIEW_ph2_t3_catalog_cli.md` |
 | 2026-03-11 | PH2-T3 | Archived `Build_Catalog_CLI` (PASS) |
 | 2026-03-11 | PH2-T2 | Archived `REVIEW_ph2_t2_classification_freshness.md` |
 | 2026-03-11 | PH2-T2 | Archived `Add_Classification_And_Freshness_Heuristics` (PASS) |
