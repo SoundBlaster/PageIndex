@@ -11,6 +11,7 @@ EXECUTE is a lightweight workflow wrapper for implementing tasks. It ensures the
 - `SPECS/INPROGRESS/{TASK_ID}_{TASK_NAME}.md` produced by PLAN.
 - `SPECS/INPROGRESS/next.md` to know the chosen task.
 - [Params](.flow/params.yaml) — project configuration (`verify.*` and `structure.*` sections).
+- REQUIRED Role Prompt: [TDD Executor Role](../ROLES/TDD_Executor.md) when implementation should follow an explicit outside-in TDD loop.
 
 ## Steps
 
@@ -20,6 +21,7 @@ EXECUTE is a lightweight workflow wrapper for implementing tasks. It ensures the
    - Print the PRD summary and key acceptance criteria from the `SPECS/INPROGRESS` doc so you know the story.
 
 2. **Work period**
+   - If role prompts are enabled, use [TDD Executor Role](../ROLES/TDD_Executor.md) to drive the red-green-refactor loop during implementation.
    - Start by writing or updating tests before making implementation changes (test-first approach).
    - Follow the step-by-step tasks in the PRD. This is when you edit files, run tests, etc.
    - Use the PRD task plan for your commits (one commit per major change is ideal).
@@ -117,3 +119,9 @@ Before committing, ensure (as defined in your QualityGates.md template):
 - Read [Params](.flow/params.yaml) for your project's quality gate commands.
 - Run `SETUP` if `.flow/params.yaml` does not exist yet.
 - When the task is complete, mark the PRD ready for ARCHIVE.
+
+## Role References (Optional)
+
+- [TDD Executor Role](../ROLES/TDD_Executor.md) — enforces failing tests first, minimal implementation steps, green validation, and documentation updates during execution.
+
+Use this role when you want EXECUTE to be explicitly test-first rather than just following the high-level PRD.

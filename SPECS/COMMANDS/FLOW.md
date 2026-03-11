@@ -178,10 +178,11 @@ mkdir -p .flow
 |---------|---------|---------|
 | `project.*` | Project name, language, default branch | all commands |
 | `verify.*` | Test, lint, format, coverage commands | EXECUTE |
+| `task_system.*` | Task tracker abstraction (`kind`: `file\|github\|jira\|linear\|none`, lightweight linkage defaults) | SELECT, PLAN, ARCHIVE |
 | `nfrs.*` | Performance budgets | REVIEW |
 | `structure.*` | Key directory paths | EXECUTE, ARCHIVE |
 
-Commands reference it as `[Params](.flow/params.yaml)` and read only the sections they need.
+Commands reference it as `[Params](.flow/params.yaml)` and read only the sections they need. Runtime, tool-specific task operations (querying boards/issues, state mutation, API calls) are delegated to Skills/adapters rather than encoded in params.
 
 ---
 

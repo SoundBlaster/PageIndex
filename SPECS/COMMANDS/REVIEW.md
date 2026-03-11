@@ -11,6 +11,7 @@ Apply a structured code review to any set of commits or staged changes. This com
 - Current git branch (commits since `main`/`origin/main`) or any explicit commit range
 - Related PRD or workplan for context (from `SPECS/INPROGRESS` or `SPECS/Workplan.md`)
 - [Params](.flow/params.yaml) — performance budgets under `nfrs.*`, PR template under `github.pr_template` (both optional)
+- Optional role prompt: [Mentor Role](../ROLES/Mentor.md) when you want broader multi-perspective review commentary and risk framing.
 
 ## Algorithm
 
@@ -90,3 +91,9 @@ If params are not configured, use these defaults:
 - Run REVIEW after `EXECUTE` but before pushing.
 - Use it iteratively for large changesets; split into logical chunks if needed.
 - Reference `SPECS/COMMANDS/FLOW.md` for where REVIEW fits in the pipeline.
+
+## Role References (Optional)
+
+- [Mentor Role](../ROLES/Mentor.md) — adds multi-domain guidance, risk explanation, and teaching-oriented commentary around review findings.
+
+Use it when you want REVIEW to include richer rationale, not just defect enumeration.
