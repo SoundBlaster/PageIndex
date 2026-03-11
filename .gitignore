@@ -1,8 +1,10 @@
 .ipynb_checkpoints
 __pycache__
+/.venv/
 files
 index
 temp/*
+/results/
 chroma-collections.parquet
 chroma-embeddings.parquet
 .DS_Store
