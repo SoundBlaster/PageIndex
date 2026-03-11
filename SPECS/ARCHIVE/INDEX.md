@@ -23,6 +23,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-12 | PH3-T2 | Archived `REVIEW_ph3_t2_candidate_selection.md` |
 | 2026-03-12 | PH3-T2 | Archived `Implement_Candidate_Selection` (PASS) |
 | 2026-03-11 | PH3-T1 | Archived `REVIEW_ph3_t1_retrieval_schema.md` |
 | 2026-03-11 | PH3-T1 | Archived `Define_Retrieval_Result_Schema` (PASS) |
