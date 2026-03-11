@@ -5,6 +5,10 @@ from .catalog import (
     build_catalog as build_catalog,
     write_catalog as write_catalog,
 )
+from .candidate_selection import (
+    DEFAULT_TOP_K as DEFAULT_TOP_K,
+    select_candidate_documents as select_candidate_documents,
+)
 from .page_index_md import md_to_tree as md_to_tree
 from .retrieval_schema import (
     ExtractedContext as ExtractedContext,
