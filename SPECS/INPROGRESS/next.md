@@ -1,18 +1,18 @@
-# Next Task: None Selected
+# Next Task: PH3-T1 Define Retrieval Result Schema
 
-**Priority:** TBD
-**Phase:** Unassigned
-**Effort:** TBD
-**Dependencies:** None
-**Status:** Awaiting SELECT
+**Priority:** P0
+**Phase:** Phase 3: Build Retrieval CLI
+**Effort:** Medium
+**Dependencies:** PH2-T1
+**Status:** Selected
 
 ## Description
 
-`PH2-T3` was archived after a passing validation run. Use SELECT to choose the next task from the updated workplan.
+Define the deterministic retrieval result contract that later candidate selection, tree search, and CLI wrappers will emit. The schema should default to a flat `selected_nodes` response while supporting grouped-by-document output and optional reasoning fields without changing the core field names.
 
 ## Next Step
 
-Run the SELECT command to choose the next task.
+Run PLAN for `PH3-T1` and define the retrieval result datatypes, required top-level fields, and serialization rules for grouped output and machine-readable errors.
 
 ## Recently Archived
 
@@ -23,6 +23,6 @@ Run the SELECT command to choose the next task.
 
 ## Suggested Next Tasks
 
-- `PH3-T1` — Define Retrieval Result Schema
 - `PH3-T2` — Implement Candidate Selection
 - `PH3-T3` — Implement Local Tree Search
+- `PH3-T4` — Build Search CLI Wrapper
