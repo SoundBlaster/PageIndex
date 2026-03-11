@@ -58,3 +58,7 @@ Before implementation, add tests for:
 - Keep the CLI as a standalone script for now; do not overload `run_pageindex.py`.
 - Avoid any behavior that mutates existing structure JSON files or manifests.
 - Default artifact placement must stay deterministic and easy to reference from later retrieval commands.
+
+---
+**Archived:** 2026-03-11
+**Verdict:** PASS

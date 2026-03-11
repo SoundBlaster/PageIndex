@@ -94,7 +94,7 @@ Recommended next task:
   - Explicit in-document dates are preferred for freshness; filesystem creation metadata is the fallback.
 
 #### PH2-T3: Build Catalog CLI
-- **Status:** Not Started
+- **Status:** ✅ Complete
 - **Description:** Expose a CLI command that scans an output root and writes a separate per-project `catalog.json` artifact.
 - **Priority:** P0
 - **Dependencies:** PH2-T1, PH2-T2
