@@ -1,18 +1,18 @@
-# Next Task: None Selected
+# Next Task: PH3-T2 — Implement Candidate Selection
 
-**Priority:** TBD
-**Phase:** Unassigned
-**Effort:** TBD
-**Dependencies:** None
-**Status:** Awaiting SELECT
+**Task ID:** PH3-T2
+**Phase:** Phase 3: Build Retrieval CLI
+**Effort:** Medium
+**Dependencies:** PH2-T1, PH2-T2, PH3-T1
+**Status:** Selected
 
 ## Description
 
-`PH3-T1` was archived after a passing validation run. Use SELECT to choose the next task from the updated workplan.
+Implement the first-stage retrieval narrowing pass over `catalog.json`. Candidate selection must use cheap deterministic signals only: lexical matching, optional path-prefix filtering, optional document-type filtering, and ranking based on document type plus freshness so the later LM-driven tree search operates on a bounded and relevant candidate set.
 
 ## Next Step
 
-Run the SELECT command to choose the next task.
+Run PLAN and EXECUTE for `PH3-T2`, then archive the task and review the changes before proceeding to `PH3-T3`.
 
 ## Recently Archived
 
@@ -24,6 +24,6 @@ Run the SELECT command to choose the next task.
 
 ## Suggested Next Tasks
 
-- `PH3-T2` — Implement Candidate Selection
 - `PH3-T3` — Implement Local Tree Search
 - `PH3-T4` — Build Search CLI Wrapper
+- `PH4-T1` — Implement Node Lookup Helpers
