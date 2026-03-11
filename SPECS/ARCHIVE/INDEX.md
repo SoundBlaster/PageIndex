@@ -19,5 +19,6 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-11 | PH2-T1 | Archived `REVIEW_ph2_t1_catalog_builder.md` |
 | 2026-03-11 | PH2-T1 | Archived `Implement_Catalog_Schema_And_Builder` (PASS) |
 | 2026-03-11 | Historical | Archived `TASK_ARCHIVE_Indexing_Summary.md` |
