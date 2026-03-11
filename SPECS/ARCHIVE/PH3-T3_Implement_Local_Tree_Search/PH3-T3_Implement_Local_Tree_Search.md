@@ -62,3 +62,7 @@ Before implementation, add tests for:
 - Do not add the public CLI surface yet; `PH3-T4` will wrap the retrieval core.
 - Keep prompts deterministic and compact because candidate selection already bounds the document set.
 - Prefer structural evidence already present in the indexed JSON over assumptions about raw text availability.
+
+---
+**Archived:** 2026-03-12
+**Verdict:** PASS

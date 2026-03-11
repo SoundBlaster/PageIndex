@@ -27,7 +27,7 @@ Release target:
 
 Recommended next task:
 
-- `PH3-T3` Implement local tree search over bounded catalog candidates
+- `PH3-T4` Build the stable local search CLI wrapper
 
 ---
 
@@ -132,7 +132,7 @@ Recommended next task:
   - Sample ISOInspector queries reduce the corpus to a bounded candidate set before LM calls.
 
 #### PH3-T3: Implement Local Tree Search
-- **Status:** Not Started
+- **Status:** ✅ Complete
 - **Description:** Run PageIndex tree search over selected candidates through LM Studio and normalize node-level results.
 - **Priority:** P0
 - **Dependencies:** PH3-T1, PH3-T2
