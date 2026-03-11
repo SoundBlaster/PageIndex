@@ -1,18 +1,18 @@
-# Next Task: None Selected
+# Next Task: PH2-T3 Build Catalog CLI
 
-**Priority:** TBD
-**Phase:** Unassigned
-**Effort:** TBD
-**Dependencies:** None
-**Status:** Awaiting SELECT
+**Priority:** P0
+**Phase:** Phase 2: Build Catalog Layer
+**Effort:** Medium
+**Dependencies:** PH2-T1, PH2-T2
+**Status:** Selected
 
 ## Description
 
-`PH2-T2` was archived after a passing validation run. Use SELECT to choose the next task from the updated workplan.
+Expose the catalog builder through a stable command-line interface that scans an output root and writes a separate `catalog.json` artifact. The CLI should reuse the existing builder logic, support explicit output destinations, and work against the real ISOInspector output root without manual edits.
 
 ## Next Step
 
-Run the SELECT command to choose the next task.
+Run PLAN for `PH2-T3` and define the CLI contract, default output path, and verification steps for synthetic and real output roots.
 
 ## Recently Archived
 
@@ -22,6 +22,6 @@ Run the SELECT command to choose the next task.
 
 ## Suggested Next Tasks
 
-- `PH2-T3` — Build Catalog CLI
 - `PH3-T1` — Define Retrieval Result Schema
 - `PH3-T2` — Implement Candidate Selection
+- `PH3-T3` — Implement Local Tree Search
