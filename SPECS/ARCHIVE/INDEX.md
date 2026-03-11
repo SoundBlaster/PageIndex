@@ -26,6 +26,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-12 | PH4-T1 | Archived `REVIEW_ph4_t1_node_lookup_helpers.md` |
 | 2026-03-12 | PH4-T1 | Archived `Implement_Node_Lookup_Helpers` (PASS) |
 | 2026-03-12 | PH3-T4 | Archived `REVIEW_ph3_t4_search_cli_wrapper.md` |
 | 2026-03-12 | PH3-T4 | Archived `Build_Search_CLI_Wrapper` (PASS) |
