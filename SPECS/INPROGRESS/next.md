@@ -4,15 +4,15 @@
 **Phase:** Phase 4: Build Context Extraction
 **Effort:** Medium
 **Dependencies:** PH3-T1
-**Status:** Awaiting SELECT
+**Status:** Selected
 
 ## Description
 
-`PH3-T4` was archived after a passing validation run. Use SELECT to choose `PH4-T1`, which will resolve retrieved node IDs back to human-usable metadata from the indexed structure outputs and prepare the context-extraction layer.
+Implement node lookup helpers that resolve retrieved node IDs back to human-usable metadata from indexed structure outputs. The lookup layer must work against the current text-absent ISOInspector artifacts, surface title/summary/path/line metadata, and report missing node text explicitly instead of silently failing.
 
 ## Next Step
 
-Run SELECT for `PH4-T1`, then create the task PRD and implement the node lookup helpers.
+Run PLAN and EXECUTE for `PH4-T1`, then archive the task and review the finished lookup surface.
 
 ## Recently Archived
 
