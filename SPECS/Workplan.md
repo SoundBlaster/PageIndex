@@ -27,7 +27,7 @@ Release target:
 
 Recommended next task:
 
-- `PH4-T1` Implement node lookup helpers for retrieved results
+- `PH5-T1` Define the stable local tool contract for search and context operations
 
 ---
 
@@ -158,7 +158,7 @@ Recommended next task:
 ## Phase 4: Build Context Extraction
 
 #### PH4-T1: Implement Node Lookup Helpers
-- **Status:** Not Started
+- **Status:** ✅ Complete
 - **Description:** Resolve retrieved node IDs back to human-usable metadata from the indexed JSON outputs.
 - **Priority:** P1
 - **Dependencies:** PH3-T1
