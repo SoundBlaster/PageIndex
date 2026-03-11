@@ -17,18 +17,50 @@ import yaml
 from pathlib import Path
 from types import SimpleNamespace as config
 
-CHATGPT_API_KEY = os.getenv("CHATGPT_API_KEY")
+DEFAULT_LOCAL_API_KEY = "lm-studio"
+
+
+def get_api_key():
+    return os.getenv("CHATGPT_API_KEY") or os.getenv("OPENAI_API_KEY")
+
+
+def get_base_url():
+    return os.getenv("OPENAI_BASE_URL") or os.getenv("CHATGPT_BASE_URL")
+
+
+def get_openai_client_kwargs(api_key=None):
+    resolved_api_key = api_key or get_api_key()
+    resolved_base_url = get_base_url()
+
+    if not resolved_api_key and resolved_base_url:
+        resolved_api_key = DEFAULT_LOCAL_API_KEY
+
+    kwargs = {}
+    if resolved_api_key:
+        kwargs["api_key"] = resolved_api_key
+    if resolved_base_url:
+        kwargs["base_url"] = resolved_base_url.rstrip("/")
+    return kwargs
+
+
+def get_token_encoder(model=None):
+    if model:
+        try:
+            return tiktoken.encoding_for_model(model)
+        except KeyError:
+            logging.warning(f"Falling back to cl100k_base encoding for unknown model: {model}")
+    return tiktoken.get_encoding("cl100k_base")
 
 def count_tokens(text, model=None):
     if not text:
         return 0
-    enc = tiktoken.encoding_for_model(model)
+    enc = get_token_encoder(model)
     tokens = enc.encode(text)
     return len(tokens)
 
-def ChatGPT_API_with_finish_reason(model, prompt, api_key=CHATGPT_API_KEY, chat_history=None):
+def ChatGPT_API_with_finish_reason(model, prompt, api_key=None, chat_history=None):
     max_retries = 10
-    client = openai.OpenAI(api_key=api_key)
+    client = openai.OpenAI(**get_openai_client_kwargs(api_key))
     for i in range(max_retries):
         try:
             if chat_history:
@@ -58,9 +90,9 @@ def ChatGPT_API_with_finish_reason(model, prompt, api_key=CHATGPT_API_KEY, chat_
 
 
 
-def ChatGPT_API(model, prompt, api_key=CHATGPT_API_KEY, chat_history=None):
+def ChatGPT_API(model, prompt, api_key=None, chat_history=None):
     max_retries = 10
-    client = openai.OpenAI(api_key=api_key)
+    client = openai.OpenAI(**get_openai_client_kwargs(api_key))
     for i in range(max_retries):
         try:
             if chat_history:
@@ -86,12 +118,12 @@ def ChatGPT_API(model, prompt, api_key=CHATGPT_API_KEY, chat_history=None):
                 return "Error"
             
 
-async def ChatGPT_API_async(model, prompt, api_key=CHATGPT_API_KEY):
+async def ChatGPT_API_async(model, prompt, api_key=None):
     max_retries = 10
     messages = [{"role": "user", "content": prompt}]
     for i in range(max_retries):
         try:
-            async with openai.AsyncOpenAI(api_key=api_key) as client:
+            async with openai.AsyncOpenAI(**get_openai_client_kwargs(api_key)) as client:
                 response = await client.chat.completions.create(
                     model=model,
                     messages=messages,
@@ -411,7 +443,7 @@ def add_preface_if_needed(data):
 
 
 def get_page_tokens(pdf_path, model="gpt-4o-2024-11-20", pdf_parser="PyPDF2"):
-    enc = tiktoken.encoding_for_model(model)
+    enc = get_token_encoder(model)
     if pdf_parser == "PyPDF2":
         pdf_reader = PyPDF2.PdfReader(pdf_path)
         page_list = []
