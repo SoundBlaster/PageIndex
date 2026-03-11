@@ -137,9 +137,8 @@ def _ranking_score(
     freshness_timestamp: str | None,
 ) -> float:
     type_priority = int(record.get("ranking_signals", {}).get("type_priority", 99))
-    type_boost = max(0, 100 - type_priority)
     freshness_boost = _freshness_sort_value(freshness_timestamp) / 1_000_000_000_000
-    return round(lexical_score + type_boost + freshness_boost, 6)
+    return round((lexical_score * 1000) - type_priority + freshness_boost, 6)
 
 
 def _sort_key(

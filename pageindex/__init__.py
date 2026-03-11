@@ -14,6 +14,7 @@ from .local_tree_search import (
     search_selected_documents as search_selected_documents,
 )
 from .page_index_md import md_to_tree as md_to_tree
+from .retrieval import search_catalog as search_catalog
 from .retrieval_schema import (
     ExtractedContext as ExtractedContext,
     RetrievalDocument as RetrievalDocument,
