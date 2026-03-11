@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from collections.abc import Callable
 import json
-from pathlib import Path
 from typing import Any
 
+from .context import flatten_structure_nodes, load_structure_payload, lookup_document_node
 from .retrieval_schema import RetrievalDocument, RetrievalError, RetrievalNode, RetrievalResult
 from .utils import ChatGPT_API, extract_json
 
@@ -29,7 +29,7 @@ def search_selected_documents(
 
     for document in candidate_documents:
         try:
-            structure_payload = _load_structure_payload(document.output_path)
+            structure_payload = load_structure_payload(document.output_path)
         except Exception as exc:
             errors.append(
                 RetrievalError(
@@ -44,7 +44,7 @@ def search_selected_documents(
             )
             continue
 
-        flattened_nodes = _flatten_structure_nodes(structure_payload.get("structure"))
+        flattened_nodes = flatten_structure_nodes(structure_payload.get("structure"))
         if not flattened_nodes:
             continue
 
@@ -86,21 +86,30 @@ def search_selected_documents(
             )
             continue
 
-        nodes_by_id = {node["node_id"]: node for node in flattened_nodes}
         document_nodes: list[RetrievalNode] = []
         for node_id in parsed_response["selected_node_ids"][:max_nodes_per_document]:
-            node_payload = nodes_by_id.get(node_id)
-            if node_payload is None:
+            try:
+                resolved_node = lookup_document_node(
+                    document,
+                    node_id,
+                    structure_payload=structure_payload,
+                )
+            except KeyError as exc:
+                errors.append(
+                    RetrievalError(
+                        code="node_lookup_failed",
+                        message=f"Selected node {node_id} could not be resolved for {document.record_id}",
+                        details={
+                            "record_id": document.record_id,
+                            "node_id": node_id,
+                            "output_path": document.output_path,
+                            "error": str(exc),
+                        },
+                    )
+                )
                 continue
             document_nodes.append(
-                RetrievalNode(
-                    record_id=document.record_id,
-                    node_id=node_id,
-                    title=node_payload["title"],
-                    source_path=document.source_path,
-                    output_path=document.output_path,
-                    summary=node_payload.get("summary"),
-                    line_number=node_payload.get("line_number"),
+                resolved_node.to_retrieval_node(
                     reasoning=parsed_response["reasoning_by_node"].get(node_id)
                     if include_reasoning
                     else None,
@@ -120,35 +129,6 @@ def search_selected_documents(
         selected_nodes=selected_nodes,
         errors=errors,
     )
-
-
-def _load_structure_payload(output_path: str | Path) -> dict[str, Any]:
-    return json.loads(Path(output_path).expanduser().resolve().read_text(encoding="utf-8"))
-
-
-def _flatten_structure_nodes(structure: Any) -> list[dict[str, Any]]:
-    flattened: list[dict[str, Any]] = []
-    if isinstance(structure, list):
-        for node in structure:
-            flattened.extend(_flatten_structure_nodes(node))
-        return flattened
-
-    if not isinstance(structure, dict):
-        return flattened
-
-    flattened.append(
-        {
-            "node_id": structure.get("node_id"),
-            "title": structure.get("title"),
-            "summary": structure.get("summary") or structure.get("prefix_summary"),
-            "line_number": structure.get("line_num"),
-        }
-    )
-    children = structure.get("nodes")
-    if isinstance(children, list):
-        for child in children:
-            flattened.extend(_flatten_structure_nodes(child))
-    return flattened
 
 
 def _build_tree_search_prompt(

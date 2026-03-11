@@ -161,6 +161,51 @@ def test_local_tree_search_returns_lm_unavailable_error(tmp_path: Path):
     assert result.errors[0].code == "lm_unavailable"
 
 
+def test_local_tree_search_skips_documents_without_lookupable_nodes(tmp_path: Path):
+    output_path = _write_structure(
+        tmp_path / "Untyped_structure.json",
+        {
+            "doc_name": "Untyped",
+            "structure": [{"title": "No node id", "nodes": []}],
+        },
+    )
+    candidate = _candidate_document(output_path)
+
+    result = search_selected_documents(
+        "anything",
+        [candidate],
+        model="local-model",
+        llm_client=lambda *, model, prompt: json.dumps({"selected_node_ids": ["0001"]}),
+    )
+
+    assert result.selected_documents == []
+    assert result.selected_nodes == []
+    assert result.errors == []
+
+
+def test_local_tree_search_reports_node_lookup_failure_for_unknown_selected_node(tmp_path: Path):
+    output_path = _write_structure(
+        tmp_path / "Lookup_structure.json",
+        {
+            "doc_name": "Lookup",
+            "structure": [
+                {"title": "Lookup", "node_id": "0001", "summary": "Lookup", "line_num": 1, "nodes": []}
+            ],
+        },
+    )
+    candidate = _candidate_document(output_path)
+
+    result = search_selected_documents(
+        "lookup",
+        [candidate],
+        model="local-model",
+        llm_client=lambda *, model, prompt: json.dumps({"selected_node_ids": ["9999"]}),
+    )
+
+    assert result.selected_nodes == []
+    assert [error.code for error in result.errors] == ["node_lookup_failed"]
+
+
 def _candidate_document(output_path: Path) -> RetrievalDocument:
     stem = output_path.name[: -len("_structure.json")]
     return RetrievalDocument(

@@ -9,6 +9,12 @@ from .candidate_selection import (
     DEFAULT_TOP_K as DEFAULT_TOP_K,
     select_candidate_documents as select_candidate_documents,
 )
+from .context import (
+    NodeContext as NodeContext,
+    lookup_document_node as lookup_document_node,
+    lookup_selected_node as lookup_selected_node,
+    resolve_selected_node_contexts as resolve_selected_node_contexts,
+)
 from .local_tree_search import (
     DEFAULT_MAX_NODES_PER_DOCUMENT as DEFAULT_MAX_NODES_PER_DOCUMENT,
     search_selected_documents as search_selected_documents,
