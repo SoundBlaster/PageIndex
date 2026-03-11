@@ -8,6 +8,7 @@ temp/*
 chroma-collections.parquet
 chroma-embeddings.parquet
 .DS_Store
+**/.DS_Store
 .env*
 notebook
 SDK/*
