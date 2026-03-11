@@ -189,6 +189,90 @@ python3 run_pageindex.py --md_path /path/to/your/document.md
 > Note: in this function, we use "#" to determine node heading and their levels. For example, "##" is level 2, "###" is level 3, etc. Make sure your markdown file is formatted correctly. If your Markdown file was converted from a PDF or HTML, we don't recommend using this function, since most existing conversion tools cannot preserve the original hierarchy. Instead, use our [PageIndex OCR](https://pageindex.ai/blog/ocr), which is designed to preserve the original hierarchy, to convert the PDF to a markdown file and then use this function.
 </details>
 
+---
+
+# Local Fork Notes
+
+This fork adds two local-first capabilities that are not documented in the upstream README:
+
+1. **LM Studio / OpenAI-compatible local inference**
+   - `pageindex/utils.py` now supports `OPENAI_BASE_URL` or `CHATGPT_BASE_URL`.
+   - The client also falls back to a local placeholder API key (`lm-studio`) when a base URL is set but no key is provided.
+   - Token counting now falls back to `cl100k_base` for local model IDs that `tiktoken` does not recognize, such as `openai/gpt-oss-20b`.
+
+2. **Recursive Markdown directory indexing**
+   - `scripts/index_markdown_directory.py` indexes every `.md` / `.markdown` file under a directory.
+   - Outputs mirror the source directory structure so repeated names like `Summary_of_Work.md` do not overwrite each other.
+   - A `manifest.json` is written to the output directory with per-file status.
+
+## Why These Changes Exist
+
+The upstream project is centered on single-file indexing and cloud OpenAI usage. This fork extends it for a fully local workflow:
+
+- run tree generation against a local LM Studio server
+- index large Markdown archives recursively
+- keep outputs stable and inspectable on disk
+
+## Local LM Studio Setup
+
+Example environment for LM Studio running on `http://192.168.1.82:1234`:
+
+```bash
+export OPENAI_BASE_URL="http://192.168.1.82:1234/v1"
+export CHATGPT_API_KEY="lm-studio"
+```
+
+Example single-file Markdown run with a local model:
+
+```bash
+.venv/bin/python run_pageindex.py \
+  --md_path /path/to/document.md \
+  --model openai/gpt-oss-20b \
+  --if-add-node-summary yes \
+  --if-add-doc-description no \
+  --if-add-node-text no
+```
+
+## Recursive Markdown Indexing
+
+Use the batch script when you need to index a whole directory tree:
+
+```bash
+.venv/bin/python scripts/index_markdown_directory.py \
+  --md_dir /path/to/markdown-root \
+  --output_dir /path/to/output-root \
+  --model openai/gpt-oss-20b \
+  --if-add-node-summary yes \
+  --if-add-doc-description no \
+  --if-add-node-text no
+```
+
+Important behavior:
+
+- each source Markdown file produces one `*_structure.json`
+- output directories mirror the source tree
+- `manifest.json` records `indexed` / `failed` status per file
+
+## Example: ISOInspector TASK_ARCHIVE
+
+```bash
+.venv/bin/python scripts/index_markdown_directory.py \
+  --md_dir /Users/egor/Development/GitHub/ISOInspector/DOCS/TASK_ARCHIVE \
+  --output_dir /Users/egor/Development/GitHub/PageIndexInstance/results/isoinspector_task_archive_lmstudio \
+  --model openai/gpt-oss-20b \
+  --if-add-node-summary yes \
+  --if-add-doc-description no \
+  --if-add-node-text no
+```
+
+If you want retrieval-ready outputs rather than just navigational tree summaries, prefer:
+
+```bash
+--if-add-node-text yes
+```
+
+That keeps node text in the JSON, which is more useful for downstream local search, MCP tools, and answer generation.
+
 <!-- 
 # ☁️ Improved Tree Generation with PageIndex OCR
 
