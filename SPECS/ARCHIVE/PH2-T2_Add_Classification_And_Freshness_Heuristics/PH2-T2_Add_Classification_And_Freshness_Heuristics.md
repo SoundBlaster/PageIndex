@@ -64,3 +64,7 @@ Before implementation, extend pytest coverage for:
 - Favor precise, transparent heuristics over broad fuzzy matching so ranking remains predictable.
 - Do not introduce candidate selection or CLI behaviors yet; this task only prepares catalog metadata.
 - Keep fallback logic stable when files lack explicit dates or use unfamiliar naming.
+
+---
+**Archived:** 2026-03-11
+**Verdict:** PASS

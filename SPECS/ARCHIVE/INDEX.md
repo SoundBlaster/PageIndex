@@ -7,6 +7,7 @@
 | Task ID | Folder | Archived | Verdict |
 |---------|--------|----------|---------|
 | PH2-T1 | [PH2-T1_Implement_Catalog_Schema_And_Builder/](PH2-T1_Implement_Catalog_Schema_And_Builder/) | 2026-03-11 | PASS |
+| PH2-T2 | [PH2-T2_Add_Classification_And_Freshness_Heuristics/](PH2-T2_Add_Classification_And_Freshness_Heuristics/) | 2026-03-11 | PASS |
 
 ## Historical Artifacts
 
@@ -19,6 +20,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-11 | PH2-T2 | Archived `Add_Classification_And_Freshness_Heuristics` (PASS) |
 | 2026-03-11 | PH2-T1 | Archived `REVIEW_ph2_t1_catalog_builder.md` |
 | 2026-03-11 | PH2-T1 | Archived `Implement_Catalog_Schema_And_Builder` (PASS) |
 | 2026-03-11 | Historical | Archived `TASK_ARCHIVE_Indexing_Summary.md` |

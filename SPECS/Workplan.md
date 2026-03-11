@@ -82,7 +82,7 @@ Recommended next task:
   - Duplicate basenames in different folders remain uniquely addressable in the catalog.
 
 #### PH2-T2: Add Classification And Freshness Heuristics
-- **Status:** Not Started
+- **Status:** ✅ Complete
 - **Description:** Classify archive files by document type and derive document freshness so candidate selection can stay precise on noisy corpora.
 - **Priority:** P0
 - **Dependencies:** PH2-T1
