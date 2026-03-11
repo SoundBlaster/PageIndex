@@ -69,3 +69,7 @@ Before implementation, add pytest coverage for:
 
 - Update `README.md` after implementation if the new builder becomes a user-facing capability worth documenting before `PH2-T3`.
 - Keep the schema extensible for `PH2-T2`, which will add classification and freshness heuristics on top of these raw fields.
+
+---
+**Archived:** 2026-03-11
+**Verdict:** PASS

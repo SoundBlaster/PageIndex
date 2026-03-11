@@ -27,7 +27,7 @@ Release target:
 
 Recommended next task:
 
-- `PH2-T1` Implement the catalog schema and builder against the existing ISOInspector output root
+- `PH2-T2` Add classification and freshness heuristics on top of the catalog builder
 
 ---
 
@@ -71,7 +71,7 @@ Recommended next task:
 ## Phase 2: Build Catalog Layer
 
 #### PH2-T1: Implement Catalog Schema And Builder
-- **Status:** INPROGRESS
+- **Status:** ✅ Complete
 - **Description:** Build the catalog model and scanner that convert many `*_structure.json` files into a deterministic per-project catalog artifact.
 - **Priority:** P0
 - **Dependencies:** None
