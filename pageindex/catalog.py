@@ -4,9 +4,20 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+import re
 from typing import Any, Iterable
 
 CATALOG_SCHEMA_VERSION = "1.0"
+_MONTH_NAME_PATTERN = (
+    r"January|February|March|April|May|June|July|August|September|October|November|December"
+)
+_TYPE_PRIORITIES = {
+    "task": 0,
+    "blocked": 1,
+    "summary": 2,
+    "generic": 3,
+    "next_tasks": 99,
+}
 
 
 @dataclass(frozen=True, slots=True)
@@ -26,6 +37,7 @@ class CatalogRecord:
     record_id: str
     project_id: str
     document_name: str
+    document_type: str
     relative_directory: str
     source_path: str
     output_path: str
@@ -34,6 +46,7 @@ class CatalogRecord:
     summary_present: bool
     node_text_present: bool
     freshness: dict[str, dict[str, str | None]]
+    ranking_signals: dict[str, Any]
     provenance: dict[str, Any]
 
     def to_dict(self) -> dict[str, Any]:
@@ -41,6 +54,7 @@ class CatalogRecord:
             "record_id": self.record_id,
             "project_id": self.project_id,
             "document_name": self.document_name,
+            "document_type": self.document_type,
             "relative_directory": self.relative_directory,
             "source_path": self.source_path,
             "output_path": self.output_path,
@@ -49,6 +63,7 @@ class CatalogRecord:
             "summary_present": self.summary_present,
             "node_text_present": self.node_text_present,
             "freshness": self.freshness,
+            "ranking_signals": self.ranking_signals,
             "provenance": self.provenance,
         }
 
@@ -108,12 +123,18 @@ def build_catalog(
 
         structure_payload = json.loads(structure_path.read_text(encoding="utf-8"))
         document_name = _resolve_document_name(structure_payload, structure_path)
+        document_type = _classify_document_type(source_rel_path, document_name)
         metrics_path = _metrics_path_for_source(source_path)
+        source_freshness = _file_freshness(source_path).to_dict()
+        output_freshness = _file_freshness(structure_path).to_dict()
+        metrics_freshness = _file_freshness(metrics_path).to_dict()
+        freshness_signal = _resolve_freshness_signal(source_path, source_freshness)
 
         record = CatalogRecord(
             record_id=f"{resolved_project_id}:{output_rel_path}",
             project_id=resolved_project_id,
             document_name=document_name,
+            document_type=document_type,
             relative_directory=relative_directory,
             source_path=str(source_path),
             output_path=str(structure_path),
@@ -124,10 +145,11 @@ def build_catalog(
             ),
             node_text_present=_structure_contains_any_key(structure_payload.get("structure"), {"text"}),
             freshness={
-                "source": _file_freshness(source_path).to_dict(),
-                "output": _file_freshness(structure_path).to_dict(),
-                "metrics": _file_freshness(metrics_path).to_dict(),
+                "source": source_freshness,
+                "output": output_freshness,
+                "metrics": metrics_freshness,
             },
+            ranking_signals=_ranking_signals_for_document_type(document_type, freshness_signal),
             provenance={
                 "manifest_path": str(resolved_manifest_path) if resolved_manifest_path else None,
                 "manifest_status": manifest_entry["status"] if manifest_entry else None,
@@ -136,6 +158,7 @@ def build_catalog(
                 "metrics_path": str(metrics_path),
                 "metrics_exists": metrics_path.exists(),
                 "structure_doc_name": structure_payload.get("doc_name"),
+                "explicit_freshness_date": freshness_signal["explicit_date"],
             },
         )
         records.append(record)
@@ -311,3 +334,91 @@ def _format_timestamp(timestamp: float | None) -> str | None:
         .isoformat(timespec="seconds")
         .replace("+00:00", "Z")
     )
+
+
+def _classify_document_type(source_rel_path: str, document_name: str) -> str:
+    fingerprint = f"{source_rel_path} {document_name}".lower()
+    if "next task" in fingerprint or "next_tasks" in fingerprint or "next.md" in fingerprint:
+        return "next_tasks"
+    if "blocked" in fingerprint:
+        return "blocked"
+    if "summary" in fingerprint:
+        return "summary"
+    if "task_archive" in fingerprint or Path(source_rel_path).name.lower().startswith("task_"):
+        return "task"
+    return "generic"
+
+
+def _ranking_signals_for_document_type(
+    document_type: str, freshness_signal: dict[str, str | int | bool | None]
+) -> dict[str, Any]:
+    type_priority = _TYPE_PRIORITIES[document_type]
+    return {
+        "type_priority": type_priority,
+        "default_excluded": document_type == "next_tasks",
+        "default_deprioritized": document_type in {"next_tasks", "generic"},
+        "freshness_timestamp": freshness_signal["timestamp"],
+        "freshness_source": freshness_signal["source"],
+    }
+
+
+def _resolve_freshness_signal(
+    source_path: Path, source_freshness: dict[str, str | None]
+) -> dict[str, str | None]:
+    explicit_date = _extract_latest_explicit_date(source_path)
+    if explicit_date is not None:
+        return {
+            "timestamp": explicit_date,
+            "source": "explicit_date",
+            "explicit_date": explicit_date,
+        }
+
+    created_at = source_freshness.get("created_at")
+    if created_at is not None:
+        return {
+            "timestamp": created_at,
+            "source": "filesystem_created_at",
+            "explicit_date": None,
+        }
+
+    return {
+        "timestamp": source_freshness.get("modified_at"),
+        "source": "filesystem_modified_at",
+        "explicit_date": None,
+    }
+
+
+def _extract_latest_explicit_date(source_path: Path) -> str | None:
+    if not source_path.exists():
+        return None
+
+    text = source_path.read_text(encoding="utf-8")
+    matches: list[datetime] = []
+    matches.extend(_extract_iso_dates(text))
+    matches.extend(_extract_month_name_dates(text))
+    if not matches:
+        return None
+
+    latest = max(matches)
+    return latest.date().isoformat()
+
+
+def _extract_iso_dates(text: str) -> list[datetime]:
+    results: list[datetime] = []
+    for match in re.finditer(r"\b(\d{4})-(\d{2})-(\d{2})\b", text):
+        try:
+            results.append(datetime.strptime(match.group(0), "%Y-%m-%d"))
+        except ValueError:
+            continue
+    return results
+
+
+def _extract_month_name_dates(text: str) -> list[datetime]:
+    results: list[datetime] = []
+    pattern = rf"\b({_MONTH_NAME_PATTERN})\s+(\d{{1,2}}),\s+(\d{{4}})\b"
+    for match in re.finditer(pattern, text):
+        try:
+            results.append(datetime.strptime(match.group(0), "%B %d, %Y"))
+        except ValueError:
+            continue
+    return results

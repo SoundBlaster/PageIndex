@@ -107,18 +107,21 @@ def test_build_catalog_preserves_unique_paths_and_detects_metadata(tmp_path: Pat
     assert loose_record["source_rel_path"] == "LooseDoc.markdown"
     assert loose_record["relative_directory"] == ""
     assert loose_record["provenance"]["source_resolution"] == "inferred"
+    assert loose_record["document_type"] == "generic"
     assert loose_record["summary_present"] is True
     assert loose_record["node_text_present"] is False
 
     assert alpha_record["source_rel_path"] == "alpha/Summary_of_Work.md"
     assert alpha_record["relative_directory"] == "alpha"
     assert alpha_record["provenance"]["manifest_status"] == "skipped"
+    assert alpha_record["document_type"] == "summary"
     assert alpha_record["summary_present"] is True
     assert alpha_record["node_text_present"] is False
 
     assert beta_record["source_rel_path"] == "beta/Summary_of_Work.md"
     assert beta_record["relative_directory"] == "beta"
     assert beta_record["provenance"]["manifest_status"] == "indexed"
+    assert beta_record["document_type"] == "summary"
     assert beta_record["summary_present"] is False
     assert beta_record["node_text_present"] is True
 
@@ -127,6 +130,11 @@ def test_build_catalog_preserves_unique_paths_and_detects_metadata(tmp_path: Pat
         assert record["freshness"]["output"]["modified_at"] is not None
         assert record["freshness"]["metrics"]["modified_at"] is not None
         assert record["provenance"]["metrics_exists"] is True
+        assert record["ranking_signals"]["freshness_timestamp"] is not None
+        assert record["ranking_signals"]["freshness_source"] in {
+            "filesystem_created_at",
+            "filesystem_modified_at",
+        }
 
 
 def test_build_catalog_requires_manifest_or_input_root(tmp_path: Path):
@@ -164,6 +172,51 @@ def test_write_catalog_writes_sorted_json(tmp_path: Path):
     assert written_path == destination.resolve()
     assert persisted["project_id"] == "demo"
     assert persisted["records"][0]["record_id"] == "demo:Doc_structure.json"
+
+
+def test_build_catalog_adds_document_type_and_explicit_freshness_ranking(tmp_path: Path):
+    input_root = tmp_path / "input"
+    output_root = tmp_path / "output"
+    input_root.mkdir()
+    output_root.mkdir()
+
+    task_source = input_root / "TASK_ARCHIVE" / "TASK_Parser_Fix.md"
+    blocked_source = input_root / "blocked" / "Blocked_Parser.md"
+    next_source = input_root / "planning" / "next_tasks.md"
+    summary_source = input_root / "reports" / "Sprint_Summary.md"
+
+    _write_text(task_source, "# Task\nUpdated 2026-03-10\nOriginal 2026-01-01\n")
+    _write_text(blocked_source, "# Blocked\nReviewed on March 4, 2026\n")
+    _write_text(next_source, "# Next Tasks\n2026-03-11\n")
+    _write_text(summary_source, "# Summary\nNo explicit date here.\n")
+
+    for source in [task_source, blocked_source, next_source, summary_source]:
+        _write_json(source.with_name(f"{source.stem}_metrics.json"), {"atoms": 1})
+        _write_json(
+            output_root / source.relative_to(input_root).with_name(f"{source.stem}_structure.json"),
+            {"doc_name": source.stem, "structure": [{"title": source.stem, "nodes": []}]},
+        )
+
+    catalog = build_catalog(output_root, input_root=input_root, project_id="demo")
+    records = {record["document_type"]: record for record in catalog.to_dict()["records"]}
+
+    assert records["task"]["ranking_signals"]["type_priority"] == 0
+    assert records["task"]["ranking_signals"]["freshness_timestamp"] == "2026-03-10"
+    assert records["task"]["ranking_signals"]["freshness_source"] == "explicit_date"
+    assert records["task"]["provenance"]["explicit_freshness_date"] == "2026-03-10"
+
+    assert records["blocked"]["ranking_signals"]["type_priority"] == 1
+    assert records["blocked"]["ranking_signals"]["freshness_timestamp"] == "2026-03-04"
+
+    assert records["summary"]["ranking_signals"]["type_priority"] == 2
+    assert records["summary"]["ranking_signals"]["default_excluded"] is False
+
+    assert records["next_tasks"]["ranking_signals"]["type_priority"] == 99
+    assert records["next_tasks"]["ranking_signals"]["default_excluded"] is True
+    assert records["next_tasks"]["ranking_signals"]["default_deprioritized"] is True
+
+    summary_freshness_source = records["summary"]["ranking_signals"]["freshness_source"]
+    assert summary_freshness_source in {"filesystem_created_at", "filesystem_modified_at"}
 
 
 def _write_json(path: Path, payload: dict) -> None:
