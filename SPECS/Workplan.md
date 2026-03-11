@@ -109,7 +109,7 @@ Recommended next task:
 ## Phase 3: Build Retrieval CLI
 
 #### PH3-T1: Define Retrieval Result Schema
-- **Status:** Not Started
+- **Status:** ✅ Complete
 - **Description:** Define the deterministic JSON contract used by CLI output first and future API/MCP wrappers later.
 - **Priority:** P0
 - **Dependencies:** PH2-T1

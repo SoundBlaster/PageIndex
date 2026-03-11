@@ -62,3 +62,7 @@ Before implementation, add tests for:
 - Do not implement candidate selection or LM search behavior in this task.
 - Keep the schema independent from transport layers so it can back CLI output, local APIs, and MCP wrappers.
 - Avoid leaking optional reasoning fields into default output.
+
+---
+**Archived:** 2026-03-11
+**Verdict:** PASS
