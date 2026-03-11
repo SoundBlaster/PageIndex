@@ -4,15 +4,15 @@
 **Phase:** Phase 3: Build Retrieval CLI
 **Effort:** High
 **Dependencies:** PH3-T2, PH3-T3
-**Status:** Awaiting SELECT
+**Status:** Selected
 
 ## Description
 
-`PH3-T3` was archived after a passing validation run. Use SELECT to choose `PH3-T4`, which will wrap candidate selection plus local tree search behind a stable JSON-first CLI surface for agent consumption.
+Build the stable local retrieval CLI on top of the `PH3-T2` candidate selector and `PH3-T3` local tree search. The command must emit deterministic JSON by default, support filter flags for candidate narrowing, and expose a dry-run mode that stops before any LM call.
 
 ## Next Step
 
-Run SELECT for `PH3-T4`, then create the task PRD and implement the retrieval CLI wrapper.
+Run PLAN and EXECUTE for `PH3-T4`, then archive the task and review the finished CLI surface.
 
 ## Recently Archived
 
