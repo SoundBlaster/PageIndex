@@ -62,3 +62,7 @@ Before implementation, add tests for:
 - Do not call any language model in this task.
 - Keep scoring explainable enough that the later tree-search stage can surface candidate provenance if needed.
 - Avoid tying the selector to one corpus layout beyond the catalog fields already defined in `PH2-T1` and `PH2-T2`.
+
+---
+**Archived:** 2026-03-12
+**Verdict:** PASS

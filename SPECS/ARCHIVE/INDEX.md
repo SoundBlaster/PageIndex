@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-03-11
+**Last Updated:** 2026-03-12
 
 ## Archived Tasks
 
@@ -10,6 +10,7 @@
 | PH2-T2 | [PH2-T2_Add_Classification_And_Freshness_Heuristics/](PH2-T2_Add_Classification_And_Freshness_Heuristics/) | 2026-03-11 | PASS |
 | PH2-T3 | [PH2-T3_Build_Catalog_CLI/](PH2-T3_Build_Catalog_CLI/) | 2026-03-11 | PASS |
 | PH3-T1 | [PH3-T1_Define_Retrieval_Result_Schema/](PH3-T1_Define_Retrieval_Result_Schema/) | 2026-03-11 | PASS |
+| PH3-T2 | [PH3-T2_Implement_Candidate_Selection/](PH3-T2_Implement_Candidate_Selection/) | 2026-03-12 | PASS |
 
 ## Historical Artifacts
 
@@ -22,6 +23,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-12 | PH3-T2 | Archived `Implement_Candidate_Selection` (PASS) |
 | 2026-03-11 | PH3-T1 | Archived `REVIEW_ph3_t1_retrieval_schema.md` |
 | 2026-03-11 | PH3-T1 | Archived `Define_Retrieval_Result_Schema` (PASS) |
 | 2026-03-11 | PH2-T3 | Archived `REVIEW_ph2_t3_catalog_cli.md` |

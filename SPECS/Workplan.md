@@ -27,7 +27,7 @@ Release target:
 
 Recommended next task:
 
-- `PH2-T2` Add classification and freshness heuristics on top of the catalog builder
+- `PH3-T3` Implement local tree search over bounded catalog candidates
 
 ---
 
@@ -120,7 +120,7 @@ Recommended next task:
   - Schema includes `query`, `corpus_root`, `catalog_path`, candidate documents, selected documents, selected nodes, extracted context, and machine-readable errors.
 
 #### PH3-T2: Implement Candidate Selection
-- **Status:** Not Started
+- **Status:** ✅ Complete
 - **Description:** Add cheap first-stage narrowing over the catalog before any LM-driven tree search runs.
 - **Priority:** P0
 - **Dependencies:** PH2-T1, PH2-T2, PH3-T1
