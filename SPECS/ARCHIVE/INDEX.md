@@ -12,6 +12,7 @@
 | PH3-T1 | [PH3-T1_Define_Retrieval_Result_Schema/](PH3-T1_Define_Retrieval_Result_Schema/) | 2026-03-11 | PASS |
 | PH3-T2 | [PH3-T2_Implement_Candidate_Selection/](PH3-T2_Implement_Candidate_Selection/) | 2026-03-12 | PASS |
 | PH3-T3 | [PH3-T3_Implement_Local_Tree_Search/](PH3-T3_Implement_Local_Tree_Search/) | 2026-03-12 | PASS |
+| PH3-T4 | [PH3-T4_Build_Search_CLI_Wrapper/](PH3-T4_Build_Search_CLI_Wrapper/) | 2026-03-12 | PASS |
 
 ## Historical Artifacts
 
@@ -24,6 +25,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-12 | PH3-T4 | Archived `Build_Search_CLI_Wrapper` (PASS) |
 | 2026-03-12 | PH3-T3 | Archived `REVIEW_ph3_t3_local_tree_search.md` |
 | 2026-03-12 | PH3-T3 | Archived `Implement_Local_Tree_Search` (PASS) |
 | 2026-03-12 | PH3-T2 | Archived `REVIEW_ph3_t2_candidate_selection.md` |

@@ -27,7 +27,7 @@ Release target:
 
 Recommended next task:
 
-- `PH3-T4` Build the stable local search CLI wrapper
+- `PH4-T1` Implement node lookup helpers for retrieved results
 
 ---
 
@@ -143,7 +143,7 @@ Recommended next task:
   - LM failures return explicit JSON errors rather than partial unstructured output.
 
 #### PH3-T4: Build Search CLI Wrapper
-- **Status:** Not Started
+- **Status:** ✅ Complete
 - **Description:** Expose the retrieval flow as a stable local CLI for agent consumption.
 - **Priority:** P0
 - **Dependencies:** PH3-T2, PH3-T3

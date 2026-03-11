@@ -66,3 +66,7 @@ Before implementation, add tests for:
 - Keep the default mode flat and machine-readable; grouped output must be opt-in.
 - The CLI should remain local-only and file-based for now; API and MCP wrappers are deferred to later phases.
 - Avoid adding flags that change the underlying retrieval schema contract.
+
+---
+**Archived:** 2026-03-12
+**Verdict:** PASS
