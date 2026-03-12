@@ -30,6 +30,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-12 | PH1-T4 | Archived `REVIEW_ph1_t4_indexing_contract_docs_tests.md` |
 | 2026-03-12 | PH1-T4 | Archived `Formalize_Indexing_Contract_Docs_And_Tests` (PASS) |
 | 2026-03-12 | Historical | Archived `REVIEW_workplan_task_completeness.md` |
 | 2026-03-12 | PH5-T2 | Archived `REVIEW_ph5_t2_local_api_shim.md` |
