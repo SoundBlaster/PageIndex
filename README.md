@@ -215,10 +215,10 @@ The upstream project is centered on single-file indexing and cloud OpenAI usage.
 
 ## Local LM Studio Setup
 
-Example environment for LM Studio running on `http://192.168.1.82:1234`:
+Example environment for LM Studio running on `http://127.0.0.1:1234`:
 
 ```bash
-export OPENAI_BASE_URL="http://192.168.1.82:1234/v1"
+export OPENAI_BASE_URL="http://127.0.0.1:1234/v1"
 export CHATGPT_API_KEY="lm-studio"
 ```
 
@@ -273,12 +273,12 @@ Profile guidance:
 - Re-run without `--resume` when you need to enrich existing JSON outputs with node text, because `--resume` skips any file whose output JSON already exists.
 - Keep `--if-add-doc-description no` unless you explicitly need document-level descriptions in the output payload.
 
-## Example: ISOInspector TASK_ARCHIVE
+## Example: Local Markdown Archive
 
 ```bash
 .venv/bin/python scripts/index_markdown_directory.py \
-  --md_dir /Users/egor/Development/GitHub/ISOInspector/DOCS/TASK_ARCHIVE \
-  --output_dir /Users/egor/Development/GitHub/PageIndexInstance/results/isoinspector_task_archive_lmstudio \
+  --md_dir /path/to/markdown-root \
+  --output_dir /path/to/output-root \
   --model openai/gpt-oss-20b \
   --if-add-node-summary yes \
   --if-add-doc-description no \
@@ -370,8 +370,8 @@ Command-line example with `jq`:
 curl -s http://127.0.0.1:8000/search \
   -H 'Content-Type: application/json' \
   -d '{
-    "query": "Why was ParseTree added in ISOInspectorKit",
-    "catalog": "results/isoinspector_task_archive_lmstudio_full_catalog.json",
+    "query": "What does the parser status field mean?",
+    "catalog": "results/example_catalog.json",
     "model": "openai/gpt-oss-20b",
     "top_k": 5,
     "answer_ready": true
@@ -384,8 +384,8 @@ If `extracted_context` is empty, fall back to node summaries:
 curl -s http://127.0.0.1:8000/search \
   -H 'Content-Type: application/json' \
   -d '{
-    "query": "Why was ParseTree added in ISOInspectorKit",
-    "catalog": "results/isoinspector_task_archive_lmstudio_full_catalog.json",
+    "query": "What does the parser status field mean?",
+    "catalog": "results/example_catalog.json",
     "model": "openai/gpt-oss-20b",
     "top_k": 5,
     "answer_ready": true
