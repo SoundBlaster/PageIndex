@@ -69,7 +69,7 @@ Recommended next task:
   - Profile names are mapped to the actual CLI flags used by `run_pageindex.py` and `scripts/index_markdown_directory.py`.
 
 #### PH1-T4: Formalize Indexing Contract Docs And Tests
-- **Status:** Not Started
+- **Status:** INPROGRESS
 - **Description:** Capture the implemented indexing contract in operator-facing docs and add automated coverage for mirrored outputs, manifest semantics, and deterministic `--resume` behavior.
 - **Priority:** P0
 - **Dependencies:** None

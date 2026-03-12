@@ -1,3 +1,11 @@
+"""Batch-index Markdown trees into mirrored PageIndex JSON outputs.
+
+Contract notes:
+- Each source Markdown file maps to one mirrored ``*_structure.json`` path.
+- ``manifest.json`` records progress for the current run only.
+- Existing output JSON files remain the source of truth for ``--resume``.
+"""
+
 import argparse
 import asyncio
 import json
@@ -11,7 +19,7 @@ if str(REPO_ROOT) not in sys.path:
 from pageindex.page_index_md import md_to_tree
 
 
-def parse_args():
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Recursively index Markdown files with PageIndex and mirror outputs into a target directory."
     )
@@ -72,16 +80,16 @@ def parse_args():
         action="store_true",
         help="Skip files whose output JSON already exists and keep writing manifest progress during the run.",
     )
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
-def find_markdown_files(root: Path):
+def find_markdown_files(root: Path) -> list[Path]:
     files = list(root.rglob("*.md"))
     files.extend(root.rglob("*.markdown"))
     return sorted({path.resolve() for path in files})
 
 
-def build_output_path(output_root: Path, md_root: Path, md_path: Path):
+def build_output_path(output_root: Path, md_root: Path, md_path: Path) -> Path:
     rel_path = md_path.relative_to(md_root)
     rel_without_suffix = rel_path.with_suffix("")
     return output_root / rel_without_suffix.parent / f"{rel_without_suffix.name}_structure.json"
@@ -106,8 +114,7 @@ def write_manifest(manifest_path: Path, manifest: dict):
         json.dump(manifest, f, indent=2, ensure_ascii=False)
 
 
-async def main():
-    args = parse_args()
+async def run(args: argparse.Namespace) -> int:
     md_root = Path(args.md_dir).expanduser().resolve()
     output_root = Path(args.output_dir).expanduser().resolve()
 
@@ -127,6 +134,7 @@ async def main():
         "files": [],
     }
     manifest_path = output_root / "manifest.json"
+    # The manifest describes progress for this invocation; existing outputs stay canonical.
     write_manifest(manifest_path, manifest)
 
     for index, md_path in enumerate(markdown_files, start=1):
@@ -178,7 +186,12 @@ async def main():
         f"failed {manifest['failed_files']}. "
         f"Manifest: {manifest_path}"
     )
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    return asyncio.run(run(parse_args(argv)))
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    raise SystemExit(main())

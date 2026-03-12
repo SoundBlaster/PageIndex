@@ -251,7 +251,27 @@ Important behavior:
 
 - each source Markdown file produces one `*_structure.json`
 - output directories mirror the source tree
-- `manifest.json` records `indexed` / `failed` status per file
+- `manifest.json` records per-file `indexed` / `skipped` / `failed` status for the current run
+
+Indexing contract:
+
+- output JSON existence is the source of truth for `--resume`
+- `manifest.json` is a progress artifact for the current run, not a database
+- downstream tooling should work even if the manifest is missing or stale
+
+Named indexing profiles:
+
+| Profile | Primary flags | Intended use |
+|---------|---------------|--------------|
+| `structure` | `--if-add-node-summary no --if-add-node-text no` | Smallest tree-only output for structure navigation. |
+| `summary` | `--if-add-node-summary yes --if-add-node-text no` | Default local retrieval profile when summaries help ranking but raw text is not required. |
+| `text` | `--if-add-node-summary yes --if-add-node-text yes` | Answer-ready profile that keeps node text for downstream context extraction. |
+
+Profile guidance:
+
+- Use the same `--output_dir` when promoting a corpus from `summary` to `text`.
+- Re-run without `--resume` when you need to enrich existing JSON outputs with node text, because `--resume` skips any file whose output JSON already exists.
+- Keep `--if-add-doc-description no` unless you explicitly need document-level descriptions in the output payload.
 
 ## Example: ISOInspector TASK_ARCHIVE
 
@@ -339,7 +359,7 @@ Transport validation failures also use the shared error object shape with local 
 - `unsupported_operation`
 - `internal_server_error`
 
-If you want retrieval-ready outputs rather than just navigational tree summaries, prefer:
+If you want retrieval-ready outputs rather than just navigational tree summaries, prefer the `text` profile:
 
 ```bash
 --if-add-node-text yes
