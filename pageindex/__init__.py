@@ -20,6 +20,11 @@ from .local_tree_search import (
     DEFAULT_MAX_NODES_PER_DOCUMENT as DEFAULT_MAX_NODES_PER_DOCUMENT,
     search_selected_documents as search_selected_documents,
 )
+from .local_api import (
+    LOCAL_API_ERROR_CODES as LOCAL_API_ERROR_CODES,
+    create_local_api_server as create_local_api_server,
+    dispatch_local_api_request as dispatch_local_api_request,
+)
 from .page_index_md import md_to_tree as md_to_tree
 from .retrieval import search_catalog as search_catalog
 from .retrieval_schema import (

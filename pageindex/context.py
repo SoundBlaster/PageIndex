@@ -33,6 +33,20 @@ class NodeContext:
             reasoning=reasoning,
         )
 
+    def to_dict(self) -> dict[str, Any]:
+        payload = {
+            "record_id": self.record_id,
+            "node_id": self.node_id,
+            "title": self.title,
+            "source_path": self.source_path,
+            "output_path": self.output_path,
+            "summary": self.summary,
+            "line_number": self.line_number,
+            "text": self.text,
+            "text_available": self.text_available,
+        }
+        return {key: value for key, value in payload.items() if value is not None}
+
     def to_extracted_context(self) -> ExtractedContext | None:
         if self.text is None:
             return None

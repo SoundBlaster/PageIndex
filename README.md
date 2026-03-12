@@ -313,6 +313,32 @@ Future local wrappers should call the code-level tool contract in `pageindex/too
 - Context requests consume the `selected_nodes` already produced by the search contract.
 - Error payloads reuse the shared `RetrievalError` shape: `{code, message, details}`.
 
+## Local API Shim
+
+Run the local HTTP wrapper with:
+
+```bash
+.venv/bin/python scripts/run_local_api.py --host 127.0.0.1 --port 8000
+```
+
+The shim delegates directly to `pageindex/tool_contract.py` and exposes two JSON endpoints:
+
+- `GET /health`
+  - Response body: `{ "status": "ok", "service": "pageindex-local-api" }`
+- `POST /search`
+  - Request body reuses the `SearchToolRequest` fields: `query`, `catalog`, `model`, `top_k`, `document_types`, `path_prefix`, `dry_run_candidates`, `include_reasoning`, `answer_ready`, and `max_nodes_per_document`
+  - Response body is the existing `RetrievalResult` JSON shape
+- `POST /context`
+  - Request body: `{ "selected_nodes": [...], "require_text": true|false }`
+  - `selected_nodes` must use the same retrieval-node objects emitted by search
+  - Response body: `{ "contexts": [NodeContext...], "errors": [RetrievalError...] }`
+
+Transport validation failures also use the shared error object shape with local API codes:
+
+- `invalid_request`
+- `unsupported_operation`
+- `internal_server_error`
+
 If you want retrieval-ready outputs rather than just navigational tree summaries, prefer:
 
 ```bash
