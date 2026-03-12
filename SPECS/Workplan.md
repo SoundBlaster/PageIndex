@@ -27,7 +27,7 @@ Release target:
 
 Recommended next task:
 
-- `PH4-T2` Implement answer-ready extraction mode on top of the context layer
+- `PH5-T2` Add the local API or MCP shim over the stabilized retrieval contract
 
 ---
 
@@ -169,7 +169,7 @@ Recommended next task:
   - Missing node text is reported explicitly instead of failing silently.
 
 #### PH4-T2: Implement Answer-Ready Extraction Mode
-- **Status:** Not Started
+- **Status:** ✅ Complete
 - **Description:** Add a higher-level retrieval mode that returns compact evidence packages when node text exists.
 - **Priority:** P1
 - **Dependencies:** PH3-T4, PH4-T1

@@ -59,3 +59,7 @@ Before implementation, add or update tests for:
 - Do not require node text for the default retrieval mode.
 - Do not return partial answer-ready context when required node text is missing; fail explicitly in the `errors` payload instead.
 - Keep the answer-ready option compatible with the existing local tool contract so `PH5-T2` can wrap it directly.
+
+---
+**Archived:** 2026-03-12
+**Verdict:** PASS
