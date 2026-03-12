@@ -29,6 +29,7 @@
 | Date | Task ID | Action |
 |------|---------|--------|
 | 2026-03-12 | PH4-T2 | Archived `Implement_Answer-Ready_Extraction_Mode` (PASS) |
+| 2026-03-12 | PH4-T2 | Archived `REVIEW_ph4_t2_answer_ready_extraction_mode.md` |
 | 2026-03-12 | PH5-T1 | Archived `REVIEW_ph5_t1_local_tool_contract.md` |
 | 2026-03-12 | PH5-T1 | Archived `Define_Local_Tool_Contract` (PASS) |
 | 2026-03-12 | PH4-T1 | Archived `REVIEW_ph4_t1_node_lookup_helpers.md` |
