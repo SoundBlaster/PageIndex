@@ -27,7 +27,7 @@ Release target:
 
 Recommended next task:
 
-- `PH5-T1` Define the stable local tool contract for search and context operations
+- `PH4-T2` Implement answer-ready extraction mode on top of the context layer
 
 ---
 
@@ -184,7 +184,7 @@ Recommended next task:
 ## Phase 5: Prepare Agent Integration
 
 #### PH5-T1: Define Local Tool Contract
-- **Status:** Not Started
+- **Status:** ✅ Complete
 - **Description:** Document the stable search and context operations that future agent wrappers must call.
 - **Priority:** P1
 - **Dependencies:** PH3-T1, PH3-T4, PH4-T1

@@ -14,6 +14,7 @@
 | PH3-T3 | [PH3-T3_Implement_Local_Tree_Search/](PH3-T3_Implement_Local_Tree_Search/) | 2026-03-12 | PASS |
 | PH3-T4 | [PH3-T4_Build_Search_CLI_Wrapper/](PH3-T4_Build_Search_CLI_Wrapper/) | 2026-03-12 | PASS |
 | PH4-T1 | [PH4-T1_Implement_Node_Lookup_Helpers/](PH4-T1_Implement_Node_Lookup_Helpers/) | 2026-03-12 | PASS |
+| PH5-T1 | [PH5-T1_Define_Local_Tool_Contract/](PH5-T1_Define_Local_Tool_Contract/) | 2026-03-12 | PASS |
 
 ## Historical Artifacts
 
@@ -26,6 +27,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-12 | PH5-T1 | Archived `Define_Local_Tool_Contract` (PASS) |
 | 2026-03-12 | PH4-T1 | Archived `REVIEW_ph4_t1_node_lookup_helpers.md` |
 | 2026-03-12 | PH4-T1 | Archived `Implement_Node_Lookup_Helpers` (PASS) |
 | 2026-03-12 | PH3-T4 | Archived `REVIEW_ph3_t4_search_cli_wrapper.md` |
