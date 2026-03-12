@@ -4,15 +4,15 @@
 **Phase:** Phase 4: Build Context Extraction
 **Effort:** Medium
 **Dependencies:** PH3-T4, PH4-T1
-**Status:** Awaiting SELECT
+**Status:** Selected
 
 ## Description
 
-`PH5-T1` was archived after a passing validation run. Use SELECT to choose `PH4-T2`, which will add answer-ready extraction on top of the context layer and fail explicitly when node text is unavailable from the existing indexes.
+Implement an answer-ready extraction mode that enriches retrieval results with compact evidence blocks and citations when node text exists. The mode must keep the existing deterministic JSON schema, populate `extracted_context` on success, and return explicit machine-readable errors when raw node text is unavailable in the current index outputs.
 
 ## Next Step
 
-Run SELECT for `PH4-T2`, then create the task PRD and add the answer-ready extraction mode.
+Run PLAN and EXECUTE for `PH4-T2`, then archive the task and review the answer-ready retrieval flow.
 
 ## Recently Archived
 
