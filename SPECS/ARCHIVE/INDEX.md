@@ -6,6 +6,7 @@
 
 | Task ID | Folder | Archived | Verdict |
 |---------|--------|----------|---------|
+| PH1-T4 | [PH1-T4_Formalize_Indexing_Contract_Docs_And_Tests/](PH1-T4_Formalize_Indexing_Contract_Docs_And_Tests/) | 2026-03-12 | PASS |
 | PH2-T1 | [PH2-T1_Implement_Catalog_Schema_And_Builder/](PH2-T1_Implement_Catalog_Schema_And_Builder/) | 2026-03-11 | PASS |
 | PH2-T2 | [PH2-T2_Add_Classification_And_Freshness_Heuristics/](PH2-T2_Add_Classification_And_Freshness_Heuristics/) | 2026-03-11 | PASS |
 | PH2-T3 | [PH2-T3_Build_Catalog_CLI/](PH2-T3_Build_Catalog_CLI/) | 2026-03-11 | PASS |
@@ -29,6 +30,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-12 | PH1-T4 | Archived `Formalize_Indexing_Contract_Docs_And_Tests` (PASS) |
 | 2026-03-12 | Historical | Archived `REVIEW_workplan_task_completeness.md` |
 | 2026-03-12 | PH5-T2 | Archived `REVIEW_ph5_t2_local_api_shim.md` |
 | 2026-03-12 | PH5-T2 | Archived `Add_Local_API_Or_MCP_Shim` (PASS) |

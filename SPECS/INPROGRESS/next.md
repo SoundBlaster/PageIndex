@@ -1,6 +1,6 @@
-# Next Task: PH1-T4 — Formalize Indexing Contract Docs And Tests
+# Next Task: PH1-T1 — Define Output And Manifest Contract
 
-**Task ID:** PH1-T4
+**Task ID:** PH1-T1
 **Phase:** Phase 1: Stabilize Indexing Outputs
 **Effort:** Medium
 **Dependencies:** None
@@ -8,14 +8,15 @@
 
 ## Description
 
-`REVIEW_workplan_task_completeness.md` identified a concrete documentation and validation gap in the already-implemented indexing foundations. Use SELECT to choose `PH1-T4`, which will formalize the indexing contract in README/code comments and add automated coverage for mirrored outputs, manifest semantics, and `--resume` overwrite protection.
+`PH1-T4` was archived after a passing validation run. Use SELECT to choose `PH1-T1`, which will define the stable output and manifest contract for indexing artifacts now that the immediate documentation and test gap has been closed.
 
 ## Next Step
 
-Run SELECT for `PH1-T4`, then create the task PRD and implement the documentation and test coverage updates.
+Run SELECT for `PH1-T1`, then create the task PRD and define the indexing output and manifest contract.
 
 ## Recently Archived
 
+- 2026-03-12 — `PH1-T4` archived to `SPECS/ARCHIVE/PH1-T4_Formalize_Indexing_Contract_Docs_And_Tests/` with verdict `PASS`.
 - 2026-03-11 — `PH2-T1` archived to `SPECS/ARCHIVE/PH2-T1_Implement_Catalog_Schema_And_Builder/` with verdict `PASS`.
 - 2026-03-11 — `PH2-T2` archived to `SPECS/ARCHIVE/PH2-T2_Add_Classification_And_Freshness_Heuristics/` with verdict `PASS`.
 - 2026-03-11 — `PH2-T3` archived to `SPECS/ARCHIVE/PH2-T3_Build_Catalog_CLI/` with verdict `PASS`.

@@ -66,3 +66,7 @@ The task is complete when all of the following are true:
 - Preserve the current contract that the manifest is a progress artifact, not a database.
 - Do not introduce a new indexing profile format or wrapper CLI in this task.
 - If the tests reveal ambiguous resume behavior, document the current intended behavior rather than silently redefining it.
+
+---
+**Archived:** 2026-03-12
+**Verdict:** PASS
