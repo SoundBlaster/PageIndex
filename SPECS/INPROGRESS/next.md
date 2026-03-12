@@ -1,6 +1,6 @@
-# Next Task: PH1-T1 — Define Output And Manifest Contract
+# Next Task: PH1-T4 — Formalize Indexing Contract Docs And Tests
 
-**Task ID:** PH1-T1
+**Task ID:** PH1-T4
 **Phase:** Phase 1: Stabilize Indexing Outputs
 **Effort:** Medium
 **Dependencies:** None
@@ -8,11 +8,11 @@
 
 ## Description
 
-`PH5-T2` was archived after a passing validation run. Use SELECT to choose `PH1-T1`, which will define the stable output and manifest contract for indexing artifacts before the remaining indexing hardening work resumes.
+`REVIEW_workplan_task_completeness.md` identified a concrete documentation and validation gap in the already-implemented indexing foundations. Use SELECT to choose `PH1-T4`, which will formalize the indexing contract in README/code comments and add automated coverage for mirrored outputs, manifest semantics, and `--resume` overwrite protection.
 
 ## Next Step
 
-Run SELECT for `PH1-T1`, then create the task PRD and define the indexing output and manifest contract.
+Run SELECT for `PH1-T4`, then create the task PRD and implement the documentation and test coverage updates.
 
 ## Recently Archived
 
