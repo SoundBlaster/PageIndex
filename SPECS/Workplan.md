@@ -27,7 +27,7 @@ Release target:
 
 Recommended next task:
 
-- `PH5-T2` Add the local API or MCP shim over the stabilized retrieval contract
+- `PH1-T1` Define the output and manifest contract for indexing artifacts
 
 ---
 
@@ -195,7 +195,7 @@ Recommended next task:
   - Agent-facing error behavior is documented in machine-readable terms.
 
 #### PH5-T2: Add Local API Or MCP Shim
-- **Status:** Not Started
+- **Status:** ✅ Complete
 - **Description:** Wrap the retrieval core in a local service surface only after the CLI and schema have stabilized.
 - **Priority:** P2
 - **Dependencies:** PH5-T1, PH3-T4, PH4-T1

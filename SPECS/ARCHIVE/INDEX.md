@@ -16,6 +16,7 @@
 | PH4-T1 | [PH4-T1_Implement_Node_Lookup_Helpers/](PH4-T1_Implement_Node_Lookup_Helpers/) | 2026-03-12 | PASS |
 | PH5-T1 | [PH5-T1_Define_Local_Tool_Contract/](PH5-T1_Define_Local_Tool_Contract/) | 2026-03-12 | PASS |
 | PH4-T2 | [PH4-T2_Implement_Answer-Ready_Extraction_Mode/](PH4-T2_Implement_Answer-Ready_Extraction_Mode/) | 2026-03-12 | PASS |
+| PH5-T2 | [PH5-T2_Add_Local_API_Or_MCP_Shim/](PH5-T2_Add_Local_API_Or_MCP_Shim/) | 2026-03-12 | PASS |
 
 ## Historical Artifacts
 
@@ -28,6 +29,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-12 | PH5-T2 | Archived `Add_Local_API_Or_MCP_Shim` (PASS) |
 | 2026-03-12 | PH4-T2 | Archived `Implement_Answer-Ready_Extraction_Mode` (PASS) |
 | 2026-03-12 | PH4-T2 | Archived `REVIEW_ph4_t2_answer_ready_extraction_mode.md` |
 | 2026-03-12 | PH5-T1 | Archived `REVIEW_ph5_t1_local_tool_contract.md` |
