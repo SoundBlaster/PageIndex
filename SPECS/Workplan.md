@@ -17,7 +17,7 @@ Current baseline already available in the repository:
 Execution note:
 
 - the existing output root is sufficient to start catalog and retrieval prototyping now
-- Phase 1 still must be completed to harden indexing semantics before wider rollout
+- Phase 1 is partially implemented already and still must be completed to formalize and harden indexing semantics before wider rollout
 
 Release target:
 
@@ -27,15 +27,15 @@ Release target:
 
 Recommended next task:
 
-- `PH1-T1` Define the output and manifest contract for indexing artifacts
+- `PH1-T4` Formalize indexing contract docs and tests
 
 ---
 
 ## Phase 1: Stabilize Indexing Foundations
 
 #### PH1-T1: Define Output And Manifest Contract
-- **Status:** Not Started
-- **Description:** Define the canonical on-disk contract for indexed, skipped, and failed files so resume logic and downstream tooling share the same assumptions.
+- **Status:** INPROGRESS
+- **Description:** Formalize the already-implemented on-disk contract for indexed, skipped, and failed files so resume logic, operator docs, and downstream tooling share the same assumptions.
 - **Priority:** P0
 - **Dependencies:** None
 - **Parallelizable:** no
@@ -45,8 +45,8 @@ Recommended next task:
   - The contract is compatible with the current `results/isoinspector_task_archive_lmstudio` output root.
 
 #### PH1-T2: Harden Resume Behavior
-- **Status:** Not Started
-- **Description:** Make `--resume` deterministic for interrupted batch indexing runs without overwriting completed output JSON files.
+- **Status:** INPROGRESS
+- **Description:** Validate and harden the existing `--resume` behavior for interrupted batch indexing runs without overwriting completed output JSON files.
 - **Priority:** P0
 - **Dependencies:** PH1-T1
 - **Parallelizable:** no
@@ -54,10 +54,11 @@ Recommended next task:
   - Interrupted runs continue from existing output files without re-indexing completed inputs.
   - Manifest updates are flushed incrementally during long runs.
   - Final indexed/skipped/failed counts are reproducible on a sample corpus.
+  - Automated coverage verifies overwrite protection and deterministic rerun behavior.
 
 #### PH1-T3: Define Indexing Profiles
-- **Status:** Not Started
-- **Description:** Document the supported indexing profiles for lightweight structure retrieval and later answer-ready text extraction.
+- **Status:** INPROGRESS
+- **Description:** Turn the existing flag-level indexing modes into documented operator profiles for lightweight structure retrieval and later answer-ready text extraction.
 - **Priority:** P1
 - **Dependencies:** PH1-T1
 - **Parallelizable:** yes
@@ -65,6 +66,18 @@ Recommended next task:
   - Profiles for `structure`, `summary`, and `text` indexing are documented.
   - The `text` profile is defined as enriching existing JSON outputs rather than requiring a separate output root.
   - Operator guidance explains when re-indexing is required to obtain raw node text.
+  - Profile names are mapped to the actual CLI flags used by `run_pageindex.py` and `scripts/index_markdown_directory.py`.
+
+#### PH1-T4: Formalize Indexing Contract Docs And Tests
+- **Status:** Not Started
+- **Description:** Capture the implemented indexing contract in operator-facing docs and add automated coverage for mirrored outputs, manifest semantics, and deterministic `--resume` behavior.
+- **Priority:** P0
+- **Dependencies:** None
+- **Parallelizable:** no
+- **Acceptance Criteria:**
+  - README documents manifest statuses `indexed`, `skipped`, and `failed` and states that output JSON existence is the source of truth for resume behavior.
+  - README documents named `structure`, `summary`, and `text` indexing profiles and maps them to the current CLI flags, including guidance for enriching an existing output root with node text.
+  - Automated tests cover mirrored output paths, per-run manifest semantics, failure recording, and `--resume` overwrite protection for `scripts/index_markdown_directory.py`.
 
 ---
 

@@ -29,6 +29,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-03-12 | Historical | Archived `REVIEW_workplan_task_completeness.md` |
 | 2026-03-12 | PH5-T2 | Archived `REVIEW_ph5_t2_local_api_shim.md` |
 | 2026-03-12 | PH5-T2 | Archived `Add_Local_API_Or_MCP_Shim` (PASS) |
 | 2026-03-12 | PH4-T2 | Archived `Implement_Answer-Ready_Extraction_Mode` (PASS) |
