@@ -359,6 +359,65 @@ Transport validation failures also use the shared error object shape with local 
 - `unsupported_operation`
 - `internal_server_error`
 
+### Converting Retrieval JSON to Plain Text
+
+When `answer_ready` is enabled, the response body already includes plain-text snippets in `extracted_context`.
+For a user-facing text answer, join the `text` fields from `extracted_context`.
+
+Command-line example with `jq`:
+
+```bash
+curl -s http://127.0.0.1:8000/search \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "query": "Why was ParseTree added in ISOInspectorKit",
+    "catalog": "results/isoinspector_task_archive_lmstudio_full_catalog.json",
+    "model": "openai/gpt-oss-20b",
+    "top_k": 5,
+    "answer_ready": true
+  }' | jq -r '.extracted_context[].text'
+```
+
+If `extracted_context` is empty, fall back to node summaries:
+
+```bash
+curl -s http://127.0.0.1:8000/search \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "query": "Why was ParseTree added in ISOInspectorKit",
+    "catalog": "results/isoinspector_task_archive_lmstudio_full_catalog.json",
+    "model": "openai/gpt-oss-20b",
+    "top_k": 5,
+    "answer_ready": true
+  }' | jq -r '
+    if (.extracted_context | length) > 0
+    then .extracted_context[].text
+    else .selected_nodes[].summary
+    end
+  '
+```
+
+Python example:
+
+```python
+import json
+
+data = json.loads(response_json)
+
+plain_text = "\n\n".join(
+    item["text"] for item in data.get("extracted_context", [])
+)
+
+if not plain_text:
+    plain_text = "\n\n".join(
+        node.get("summary", "")
+        for node in data.get("selected_nodes", [])
+        if node.get("summary")
+    )
+
+print(plain_text)
+```
+
 If you want retrieval-ready outputs rather than just navigational tree summaries, prefer the `text` profile:
 
 ```bash
