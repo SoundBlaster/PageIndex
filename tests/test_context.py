@@ -5,7 +5,12 @@ from pathlib import Path
 
 import pytest
 
-from pageindex.context import flatten_structure_nodes, lookup_document_node, resolve_selected_node_contexts
+from pageindex.context import (
+    build_extracted_context,
+    flatten_structure_nodes,
+    lookup_document_node,
+    resolve_selected_node_contexts,
+)
 from pageindex.retrieval_schema import RetrievalDocument, RetrievalNode
 
 
@@ -192,6 +197,38 @@ def test_resolve_selected_node_contexts_reports_lookup_failure_when_node_is_miss
 
     assert contexts == []
     assert [error.code for error in errors] == ["node_lookup_failed"]
+
+
+def test_build_extracted_context_returns_citation_when_text_exists(tmp_path: Path):
+    output_path = _write_structure(
+        tmp_path / "BoxHeader_structure.json",
+        {
+            "doc_name": "BoxHeader",
+            "structure": [
+                {
+                    "title": "BoxHeader",
+                    "node_id": "0001",
+                    "summary": "Defines BoxHeader",
+                    "text": "BoxHeader is the protocol entry point.",
+                    "line_num": 12,
+                    "nodes": [],
+                }
+            ],
+        },
+    )
+    selected_node = _selected_node(output_path, node_id="0001", title="BoxHeader")
+
+    extracted_context, errors = build_extracted_context([selected_node], require_text=True)
+
+    assert errors == []
+    assert [context.to_dict() for context in extracted_context] == [
+        {
+            "record_id": selected_node.record_id,
+            "node_id": "0001",
+            "text": "BoxHeader is the protocol entry point.",
+            "citation": "BoxHeader.md:12",
+        }
+    ]
 
 
 def _document(output_path: Path) -> RetrievalDocument:

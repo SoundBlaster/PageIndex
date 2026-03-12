@@ -15,6 +15,7 @@ SEARCH_OPERATION_ERROR_CODES = (
     "lm_unavailable",
     "invalid_lm_response",
     "node_lookup_failed",
+    "node_text_missing",
 )
 CONTEXT_OPERATION_ERROR_CODES = (
     "node_lookup_failed",
@@ -32,6 +33,7 @@ class SearchToolRequest:
     path_prefix: str | None = None
     dry_run_candidates: bool = False
     include_reasoning: bool = False
+    answer_ready: bool = False
     max_nodes_per_document: int = DEFAULT_MAX_NODES_PER_DOCUMENT
 
 
@@ -55,6 +57,7 @@ def run_search_tool(
         path_prefix=request.path_prefix,
         dry_run_candidates=request.dry_run_candidates,
         include_reasoning=request.include_reasoning,
+        answer_ready=request.answer_ready,
         max_nodes_per_document=request.max_nodes_per_document,
         llm_client=llm_client,
     )

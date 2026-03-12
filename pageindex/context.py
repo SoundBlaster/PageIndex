@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .retrieval_schema import RetrievalDocument, RetrievalError, RetrievalNode
+from .retrieval_schema import ExtractedContext, RetrievalDocument, RetrievalError, RetrievalNode
 
 
 @dataclass(frozen=True, slots=True)
@@ -31,6 +31,16 @@ class NodeContext:
             summary=self.summary,
             line_number=self.line_number,
             reasoning=reasoning,
+        )
+
+    def to_extracted_context(self) -> ExtractedContext | None:
+        if self.text is None:
+            return None
+        return ExtractedContext(
+            record_id=self.record_id,
+            node_id=self.node_id,
+            text=self.text,
+            citation=_citation_for_context(self),
         )
 
 
@@ -146,6 +156,26 @@ def resolve_selected_node_contexts(
     return resolved_contexts, errors
 
 
+def build_extracted_context(
+    selected_nodes: Iterable[RetrievalNode],
+    *,
+    require_text: bool = True,
+) -> tuple[list[ExtractedContext], list[RetrievalError]]:
+    resolved_contexts, errors = resolve_selected_node_contexts(
+        selected_nodes,
+        require_text=require_text,
+    )
+    if require_text and errors:
+        return [], errors
+
+    extracted_context = [
+        context.to_extracted_context()
+        for context in resolved_contexts
+        if context.to_extracted_context() is not None
+    ]
+    return extracted_context, errors
+
+
 def _lookup_node_context(
     *,
     record_id: str,
@@ -225,3 +255,10 @@ def _normalized_text(value: Any) -> str | None:
         return None
     text = value.strip()
     return text or None
+
+
+def _citation_for_context(context: NodeContext) -> str:
+    source_name = Path(context.source_path).name if context.source_path else Path(context.output_path).name
+    if context.line_number is not None:
+        return f"{source_name}:{context.line_number}"
+    return source_name

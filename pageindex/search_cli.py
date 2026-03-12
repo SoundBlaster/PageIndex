@@ -43,6 +43,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="Add grouped document output while preserving the flat selected_nodes list.",
     )
+    parser.add_argument(
+        "--answer-ready",
+        action="store_true",
+        help="Populate extracted_context when node text is available and fail explicitly when it is not.",
+    )
     parser.add_argument("--model", default=DEFAULT_MODEL, help="Local model name for tree search.")
     parser.add_argument(
         "--max-nodes-per-document",
@@ -69,6 +74,7 @@ def main(
         path_prefix=args.path_prefix,
         dry_run_candidates=args.dry_run_candidates,
         include_reasoning=args.with_reasoning,
+        answer_ready=args.answer_ready,
         max_nodes_per_document=args.max_nodes_per_document,
         llm_client=llm_client,
     )

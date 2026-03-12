@@ -88,6 +88,103 @@ def test_search_catalog_runs_full_retrieval_with_stub_model(tmp_path: Path):
     assert result.selected_nodes[0].node_id == "0001"
 
 
+def test_search_catalog_populates_extracted_context_in_answer_ready_mode(tmp_path: Path):
+    structure_path = tmp_path / "ParseTree_structure.json"
+    structure_path.write_text(
+        json.dumps(
+            {
+                "doc_name": "ParseTree",
+                "structure": [
+                    {
+                        "title": "ParseTree Overview",
+                        "node_id": "0001",
+                        "summary": "Overview",
+                        "text": "ParseTree preserves hierarchical parsing semantics.",
+                        "line_num": 3,
+                        "nodes": [],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    catalog_path = _write_catalog(
+        tmp_path,
+        [
+            _record(
+                record_id="demo:task",
+                document_name="ParseTree Task",
+                document_type="task",
+                source_rel_path="TASK_ARCHIVE/TASK_ParseTree.md",
+                output_path=structure_path,
+            )
+        ],
+    )
+
+    result = search_catalog(
+        "parse tree",
+        catalog_path,
+        model="stub-model",
+        answer_ready=True,
+        llm_client=lambda *, model, prompt: json.dumps({"selected_node_ids": ["0001"]}),
+    )
+
+    assert [context.to_dict() for context in result.extracted_context] == [
+        {
+            "record_id": "demo:task",
+            "node_id": "0001",
+            "text": "ParseTree preserves hierarchical parsing semantics.",
+            "citation": "TASK_ParseTree.md:3",
+        }
+    ]
+    assert result.errors == []
+
+
+def test_search_catalog_returns_explicit_error_when_answer_ready_text_is_missing(tmp_path: Path):
+    structure_path = tmp_path / "ParseTree_structure.json"
+    structure_path.write_text(
+        json.dumps(
+            {
+                "doc_name": "ParseTree",
+                "structure": [
+                    {
+                        "title": "ParseTree Overview",
+                        "node_id": "0001",
+                        "summary": "Overview",
+                        "line_num": 3,
+                        "nodes": [],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    catalog_path = _write_catalog(
+        tmp_path,
+        [
+            _record(
+                record_id="demo:task",
+                document_name="ParseTree Task",
+                document_type="task",
+                source_rel_path="TASK_ARCHIVE/TASK_ParseTree.md",
+                output_path=structure_path,
+            )
+        ],
+    )
+
+    result = search_catalog(
+        "parse tree",
+        catalog_path,
+        model="stub-model",
+        answer_ready=True,
+        llm_client=lambda *, model, prompt: json.dumps({"selected_node_ids": ["0001"]}),
+    )
+
+    assert result.extracted_context == []
+    assert [error.code for error in result.errors] == ["node_text_missing"]
+    assert result.selected_nodes[0].node_id == "0001"
+
+
 def _write_catalog(tmp_path: Path, records: list[dict[str, object]]) -> Path:
     input_root = (tmp_path / "input").resolve()
     output_root = (tmp_path / "output").resolve()

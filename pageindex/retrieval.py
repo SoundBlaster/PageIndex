@@ -4,6 +4,7 @@ from collections.abc import Callable, Iterable
 from pathlib import Path
 
 from .candidate_selection import DEFAULT_TOP_K, load_catalog_payload, select_candidate_documents
+from .context import build_extracted_context
 from .local_tree_search import DEFAULT_MAX_NODES_PER_DOCUMENT, search_selected_documents
 from .retrieval_schema import RetrievalResult
 
@@ -18,6 +19,7 @@ def search_catalog(
     path_prefix: str | None = None,
     dry_run_candidates: bool = False,
     include_reasoning: bool = False,
+    answer_ready: bool = False,
     max_nodes_per_document: int = DEFAULT_MAX_NODES_PER_DOCUMENT,
     llm_client: Callable[..., str] | None = None,
 ) -> RetrievalResult:
@@ -40,7 +42,7 @@ def search_catalog(
             candidate_documents=candidate_documents,
         )
 
-    return search_selected_documents(
+    result = search_selected_documents(
         query,
         candidate_documents,
         model=model,
@@ -49,6 +51,26 @@ def search_catalog(
         include_reasoning=include_reasoning,
         corpus_root=corpus_root,
         catalog_path=catalog_path,
+    )
+    if not answer_ready:
+        return result
+
+    extracted_context, extraction_errors = build_extracted_context(
+        result.selected_nodes,
+        require_text=True,
+    )
+    if extraction_errors:
+        extracted_context = []
+
+    return RetrievalResult(
+        query=result.query,
+        corpus_root=result.corpus_root,
+        catalog_path=result.catalog_path,
+        candidate_documents=result.candidate_documents,
+        selected_documents=result.selected_documents,
+        selected_nodes=result.selected_nodes,
+        extracted_context=extracted_context,
+        errors=result.errors + extraction_errors,
     )
 
 

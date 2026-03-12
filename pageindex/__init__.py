@@ -11,6 +11,7 @@ from .candidate_selection import (
 )
 from .context import (
     NodeContext as NodeContext,
+    build_extracted_context as build_extracted_context,
     lookup_document_node as lookup_document_node,
     lookup_selected_node as lookup_selected_node,
     resolve_selected_node_contexts as resolve_selected_node_contexts,

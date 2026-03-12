@@ -281,14 +281,17 @@ Future local wrappers should call the code-level tool contract in `pageindex/too
   - `path_prefix`
   - `dry_run_candidates`
   - `include_reasoning`
+  - `answer_ready`
   - `max_nodes_per_document`
 - Output contract: `RetrievalResult`
   - This is the same shape emitted by `pageindex/search_cli.py`, including `candidate_documents`, `selected_documents`, `selected_nodes`, `extracted_context`, and `errors`.
+  - When `answer_ready` is true, successful runs fill `extracted_context` and text-absent runs return an explicit machine-readable failure in `errors`.
 - Machine-readable search error codes:
   - `document_load_failed`
   - `lm_unavailable`
   - `invalid_lm_response`
   - `node_lookup_failed`
+  - `node_text_missing`
 
 ### Context Operation
 

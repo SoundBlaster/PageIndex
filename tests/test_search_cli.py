@@ -60,7 +60,36 @@ def test_search_cli_emits_grouped_json_with_reasoning(tmp_path: Path):
     assert payload["grouped_documents"][0]["selected_nodes"][0]["node_id"] == "0001"
 
 
-def _write_catalog(tmp_path: Path) -> Path:
+def test_search_cli_emits_answer_ready_context_when_requested(tmp_path: Path):
+    catalog_path = _write_catalog(tmp_path, include_text=True)
+    output = StringIO()
+
+    exit_code = main(
+        [
+            "--query",
+            "parse tree",
+            "--catalog",
+            str(catalog_path),
+            "--answer-ready",
+        ],
+        llm_client=lambda *, model, prompt: json.dumps({"selected_node_ids": ["0001"]}),
+        stdout=output,
+    )
+
+    payload = json.loads(output.getvalue())
+
+    assert exit_code == 0
+    assert payload["extracted_context"] == [
+        {
+            "record_id": "demo:task",
+            "node_id": "0001",
+            "text": "ParseTree preserves hierarchical parsing semantics.",
+            "citation": "TASK_ParseTree.md:3",
+        }
+    ]
+
+
+def _write_catalog(tmp_path: Path, *, include_text: bool = False) -> Path:
     output_path = tmp_path / "ParseTree_structure.json"
     output_path.write_text(
         json.dumps(
@@ -71,6 +100,9 @@ def _write_catalog(tmp_path: Path) -> Path:
                         "title": "ParseTree Overview",
                         "node_id": "0001",
                         "summary": "Overview",
+                        "text": "ParseTree preserves hierarchical parsing semantics."
+                        if include_text
+                        else None,
                         "line_num": 3,
                         "nodes": [],
                     }

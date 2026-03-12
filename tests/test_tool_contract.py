@@ -18,12 +18,13 @@ from pageindex.tool_contract import (
 
 
 def test_run_search_tool_reuses_retrieval_result_shape(tmp_path: Path):
-    catalog_path = _write_catalog(tmp_path)
+    catalog_path = _write_catalog(tmp_path, include_text=True)
     request = SearchToolRequest(
         query="parse tree",
         catalog=catalog_path,
         model="stub-model",
         include_reasoning=True,
+        answer_ready=True,
     )
 
     result = run_search_tool(
@@ -41,6 +42,14 @@ def test_run_search_tool_reuses_retrieval_result_shape(tmp_path: Path):
     assert payload["query"] == "parse tree"
     assert payload["selected_nodes"][0]["node_id"] == "0001"
     assert payload["selected_nodes"][0]["reasoning"] == "title matches"
+    assert payload["extracted_context"] == [
+        {
+            "record_id": "demo:task",
+            "node_id": "0001",
+            "text": "ParseTree preserves hierarchical parsing semantics.",
+            "citation": "TASK_ParseTree.md:3",
+        }
+    ]
 
 
 def test_run_context_tool_returns_node_context_and_missing_text_error(tmp_path: Path):
@@ -99,11 +108,12 @@ def test_tool_contract_defaults_and_error_catalog_match_existing_surfaces():
     assert request.top_k == 7
     assert request.max_nodes_per_document == DEFAULT_MAX_NODES_PER_DOCUMENT
     assert request.document_types == ()
+    assert request.answer_ready is False
     assert SEARCH_OPERATION_ERROR_CODES == error_code_catalog()["search"]
     assert CONTEXT_OPERATION_ERROR_CODES == error_code_catalog()["context"]
 
 
-def _write_catalog(tmp_path: Path) -> Path:
+def _write_catalog(tmp_path: Path, *, include_text: bool = False) -> Path:
     output_path = tmp_path / "ParseTree_structure.json"
     output_path.write_text(
         json.dumps(
@@ -114,6 +124,9 @@ def _write_catalog(tmp_path: Path) -> Path:
                         "title": "ParseTree Overview",
                         "node_id": "0001",
                         "summary": "Overview",
+                        "text": "ParseTree preserves hierarchical parsing semantics."
+                        if include_text
+                        else None,
                         "line_num": 3,
                         "nodes": [],
                     }
