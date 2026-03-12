@@ -28,3 +28,12 @@ from .retrieval_schema import (
     RetrievalNode as RetrievalNode,
     RetrievalResult as RetrievalResult,
 )
+from .tool_contract import (
+    CONTEXT_OPERATION_ERROR_CODES as CONTEXT_OPERATION_ERROR_CODES,
+    SEARCH_OPERATION_ERROR_CODES as SEARCH_OPERATION_ERROR_CODES,
+    ContextToolRequest as ContextToolRequest,
+    SearchToolRequest as SearchToolRequest,
+    error_code_catalog as error_code_catalog,
+    run_context_tool as run_context_tool,
+    run_search_tool as run_search_tool,
+)

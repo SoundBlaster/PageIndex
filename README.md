@@ -265,6 +265,51 @@ Important behavior:
   --if-add-node-text no
 ```
 
+## Local Tool Contract
+
+Future local wrappers should call the code-level tool contract in `pageindex/tool_contract.py` instead of shelling out to ad hoc internal functions.
+
+### Search Operation
+
+- Callable: `run_search_tool(SearchToolRequest(...)) -> RetrievalResult`
+- Request fields mirror the local search CLI:
+  - `query`
+  - `catalog`
+  - `model`
+  - `top_k`
+  - `document_types`
+  - `path_prefix`
+  - `dry_run_candidates`
+  - `include_reasoning`
+  - `max_nodes_per_document`
+- Output contract: `RetrievalResult`
+  - This is the same shape emitted by `pageindex/search_cli.py`, including `candidate_documents`, `selected_documents`, `selected_nodes`, `extracted_context`, and `errors`.
+- Machine-readable search error codes:
+  - `document_load_failed`
+  - `lm_unavailable`
+  - `invalid_lm_response`
+  - `node_lookup_failed`
+
+### Context Operation
+
+- Callable: `run_context_tool(ContextToolRequest(...)) -> tuple[list[NodeContext], list[RetrievalError]]`
+- Request fields:
+  - `selected_nodes`
+  - `require_text`
+- Input contract: `selected_nodes` must come from the existing `RetrievalResult.selected_nodes` schema rather than a wrapper-specific node format.
+- Output contract:
+  - `NodeContext` records with `record_id`, `node_id`, `title`, `source_path`, `output_path`, `summary`, `line_number`, optional `text`, and `text_available`
+  - `RetrievalError` entries for machine-readable failures
+- Machine-readable context error codes:
+  - `node_lookup_failed`
+  - `node_text_missing`
+
+### Contract Rules
+
+- Search responses reuse the existing retrieval JSON schema; wrappers must not invent alternate result payloads.
+- Context requests consume the `selected_nodes` already produced by the search contract.
+- Error payloads reuse the shared `RetrievalError` shape: `{code, message, details}`.
+
 If you want retrieval-ready outputs rather than just navigational tree summaries, prefer:
 
 ```bash
