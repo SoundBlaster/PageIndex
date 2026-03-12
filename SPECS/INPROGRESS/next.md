@@ -4,15 +4,15 @@
 **Phase:** Phase 5: Prepare Agent Integration
 **Effort:** Medium
 **Dependencies:** PH3-T1, PH3-T4, PH4-T1
-**Status:** Awaiting SELECT
+**Status:** Selected
 
 ## Description
 
-`PH4-T1` was archived after a passing validation run. Use SELECT to choose `PH5-T1`, which will document the stable search and context operations that future local agent wrappers must call without inventing a second response format.
+Define the stable local tool contract for the search and context operations that future agent wrappers will call. The contract must reuse the existing retrieval schema, document machine-readable error behavior, and make the callable surface explicit in both code and repository docs without introducing a second payload format.
 
 ## Next Step
 
-Run SELECT for `PH5-T1`, then create the task PRD and define the local tool contract around the existing CLI and context schema.
+Run PLAN and EXECUTE for `PH5-T1`, then archive the task and review the documented contract surface.
 
 ## Recently Archived
 
