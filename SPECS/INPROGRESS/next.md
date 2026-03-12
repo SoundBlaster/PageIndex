@@ -4,15 +4,15 @@
 **Phase:** Phase 5: Prepare Agent Integration
 **Effort:** Medium
 **Dependencies:** PH5-T1, PH3-T4, PH4-T1
-**Status:** Awaiting SELECT
+**Status:** Selected
 
 ## Description
 
-`PH4-T2` was archived after a passing validation run. Use SELECT to choose `PH5-T2`, which will wrap the stabilized retrieval and context contract behind a local service surface without duplicating business logic.
+Add a thin local API shim over the stabilized search and context contract so agents can query the local corpus through JSON requests without custom parsing hacks. The wrapper must delegate to `pageindex.tool_contract`, preserve the existing retrieval and context payloads, and avoid duplicating any retrieval or node lookup logic.
 
 ## Next Step
 
-Run SELECT for `PH5-T2`, then create the task PRD and add the local API or MCP shim over the shared contract layer.
+Run PLAN and EXECUTE for `PH5-T2`, then archive the task and review the local wrapper surface.
 
 ## Recently Archived
 
